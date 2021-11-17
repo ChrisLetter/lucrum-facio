@@ -1,9 +1,6 @@
-import Head from 'next/head';
 import { Flex, Input, Button, Text, Heading } from '@chakra-ui/react';
-import Login from './../components/authentication/Login';
-import RegisterOption from '../components/authentication/RegisterOption';
 
-const Home = () => {
+const Register = () => {
   return (
     <Flex
       align="center"
@@ -16,10 +13,8 @@ const Home = () => {
       <Heading as="h1" size="4xl">
         Lucrum Facio
       </Heading>
-      <Login />
-      <RegisterOption />
     </Flex>
   );
 };
 
-export default Home;
+export default Register;
