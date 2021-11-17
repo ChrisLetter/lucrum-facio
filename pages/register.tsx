@@ -31,7 +31,7 @@ const Register = () => {
         validate={(values) => {
           const errors: IRegisterFormErrors = {};
           if (!values.email) {
-            errors.email = 'Required';
+            errors.email = 'Enter an email';
           } else if (
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
           ) {
@@ -41,7 +41,7 @@ const Register = () => {
             errors.password = 'Enter a password';
           }
           if (!values.username) {
-            errors.username = 'Enter a username';
+            errors.username = 'Enter an username';
           }
           return errors;
         }}
