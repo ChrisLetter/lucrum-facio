@@ -8,3 +8,18 @@ export const REGISTER_USER = gql`
     }
   }
 `;
+
+export const LOGIN_USER = gql`
+  mutation ($loginInput: loginUserInput) {
+    login(loginInput: $loginInput) {
+      token
+      username
+      holdings {
+        location
+        quantity
+        name
+        apy
+      }
+    }
+  }
+`;

@@ -10,6 +10,16 @@ export interface IRegisterFormValues {
   username: string;
 }
 
+
+export interface ILoginFormErrors {
+  email?: string;
+  password?: string;
+}
+export interface ILoginFormValues {
+  email: string;
+  password: string;
+}
+
 export interface IRegisterInput {
   registrationInput: {
     username: string;

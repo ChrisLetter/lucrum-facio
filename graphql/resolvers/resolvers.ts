@@ -14,7 +14,6 @@ export const resolvers = {
   },
   Mutation: {
     async register(_: any, { registrationInput }: IRegisterInput) {
-      console.log('hitting');
       const existingUser = await prisma.user.findUnique({
         where: {
           email: registrationInput.email,
@@ -45,7 +44,13 @@ export const resolvers = {
       );
       if (userInfo?.id && isPasswordCorrect) {
         const token = createToken(userInfo.id);
-        return { token, user: userInfo };
+        const username = userInfo.username;
+        const portfolio = await prisma.holding.findMany({
+          where: {
+            userId: Number(userInfo.id),
+          },
+        });
+        return { token, username, holdings: portfolio };
       } else {
         throw new AuthenticationError('wrong email or password');
       }
