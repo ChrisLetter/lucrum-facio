@@ -12,10 +12,12 @@ import {
   IRegisterFormValues,
   IRegisterFormErrors,
 } from './../interfaces/interfaces';
+import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from './../graphql/apolloClient/mutations';
 
 const Register = () => {
+  const [errors, setErrors] = useState('');
   const [mutateFunction, { data, loading, error }] = useMutation(
     REGISTER_USER,
     {
@@ -23,6 +25,9 @@ const Register = () => {
         if (register) {
           console.log(register);
         }
+      },
+      onError(err: any) {
+        setErrors(err.graphQLErrors[0].message);
       },
     },
   );

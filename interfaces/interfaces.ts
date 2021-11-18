@@ -24,3 +24,17 @@ export interface ILoginInput {
     password: string;
   };
 }
+
+export interface IUserInfo {
+  username: string;
+  accessToken: string;
+  holdings: IHolding[];
+}
+
+export interface IHolding {
+  name: string;
+  location: string;
+  quantity: number;
+  apy: number;
+}
+
