@@ -19,7 +19,12 @@ export const typeDefs = gql`
   }
   type loggedUser {
     token: String!
-    user: user
+    username: String!
+    holdings: [holding]
+  }
+  type newUser {
+    token: String!
+    username: String!
   }
   type Query {
     getUsers: [user]
@@ -29,7 +34,7 @@ export const typeDefs = gql`
     password: String!
   }
   type Mutation {
-    register(registrationInput: registerUserInput): loggedUser
+    register(registrationInput: registerUserInput): newUser
     login(loginInput: loginUserInput): loggedUser
   }
   input registerUserInput {

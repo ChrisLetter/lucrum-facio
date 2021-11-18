@@ -28,7 +28,7 @@ const Register = () => {
     {
       onCompleted({ register }) {
         if (register) {
-          const username = register.user.username;
+          const username = register.username;
           const accessToken = register.token;
           const userInfo = {
             username,
@@ -44,7 +44,8 @@ const Register = () => {
         }
       },
       onError(err: any) {
-        setErrors(err.graphQLErrors[0].message);
+        console.log(err);
+        // setErrors(err.graphQLErrors[0].message);
       },
     },
   );

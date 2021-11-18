@@ -14,6 +14,7 @@ export const resolvers = {
   },
   Mutation: {
     async register(_: any, { registrationInput }: IRegisterInput) {
+      console.log('hitting');
       const existingUser = await prisma.user.findUnique({
         where: {
           email: registrationInput.email,
@@ -26,11 +27,11 @@ export const resolvers = {
       }
       const hashedPass = await bcrypt.hash(registrationInput.password, 10);
       registrationInput.password = hashedPass;
-      const user = await prisma.user.create({
+      const { id, username } = await prisma.user.create({
         data: registrationInput,
       });
-      const token = createToken(user.id);
-      return { token, user };
+      const token = createToken(id);
+      return { token, username };
     },
     async login(_: any, { loginInput }: ILoginInput) {
       const userInfo = await prisma.user.findUnique({
