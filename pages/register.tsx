@@ -8,16 +8,26 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
-import { IRegisterFormErrors } from './../interfaces/interfaces';
+import {
+  IRegisterFormValues,
+  IRegisterFormErrors,
+} from './../interfaces/interfaces';
 import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from './../graphql/apolloClient/mutations';
 
 const Register = () => {
-  // TODO: write interface for this input
+  const [mutateFunction, { data, loading, error }] = useMutation(
+    REGISTER_USER,
+    {
+      onCompleted({ register }) {
+        if (register) {
+          console.log(register);
+        }
+      },
+    },
+  );
 
-  const [mutateFunction, { data, loading, error }] = useMutation(REGISTER_USER);
-
-  async function submit(values: any) {
+  async function submit(values: IRegisterFormValues) {
     await mutateFunction({
       variables: {
         registrationInput: {

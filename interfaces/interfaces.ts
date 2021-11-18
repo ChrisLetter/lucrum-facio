@@ -4,6 +4,12 @@ export interface IRegisterFormErrors {
   username?: string;
 }
 
+export interface IRegisterFormValues {
+  email: string;
+  password: string;
+  username: string;
+}
+
 export interface IRegisterInput {
   registrationInput: {
     username: string;
