@@ -9,12 +9,11 @@ const createToken = (id: number) => jwt.sign(id, secret);
 const getUserFromToken = async (token: string) => {
   try {
     const userId = jwt.verify(token, secret);
-    const user = await prisma.user.findUnique({
+    return await prisma.user.findUnique({
       where: {
-        id: userId,
+        id: Number(userId),
       },
     });
-    return user;
   } catch (e) {
     return null;
   }

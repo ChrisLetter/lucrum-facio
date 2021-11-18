@@ -2,15 +2,15 @@ import { PrismaClient } from '@prisma/client';
 const { AuthenticationError } = require('apollo-server');
 const bcrypt = require('bcrypt');
 const prisma = new PrismaClient();
-const { authenticated, authorized, createToken } = require('./auth');
+const { authenticated, createToken } = require('./auth');
 import { IRegisterInput, ILoginInput } from './../../interfaces/interfaces';
 
 export const resolvers = {
   Query: {
-    getUsers: async () => {
+    getUsers: authenticated(async (_: any, __: any, context: any) => {
       const res = await prisma.user.findMany();
       return res;
-    },
+    }),
   },
   Mutation: {
     async register(_: any, { registrationInput }: IRegisterInput) {

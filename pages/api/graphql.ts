@@ -17,9 +17,9 @@ const cors = Cors();
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  context({ req }) {
-    const token = req.headers.authorization;
-    const user = getUserFromToken(token);
+  async context({ req }) {
+    const token = req.headers.authorization?.split(' ')[1];
+    const user = await getUserFromToken(token);
     return { user, createToken };
   },
 });
