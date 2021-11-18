@@ -25,7 +25,6 @@ const authenticated =
     if (!context.user) {
       throw new AuthenticationError('must authenticate');
     }
-
     return next(root, args, context, info);
   };
 

@@ -11,3 +11,10 @@ export interface IRegisterInput {
     password: string;
   };
 }
+
+export interface ILoginInput {
+  loginInput: {
+    email: string;
+    password: string;
+  };
+}
