@@ -1,6 +1,8 @@
 import type { AppProps } from 'next/app';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import '@fontsource/livvic';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+const PORT = process.env.PORT || 3000;
 
 const theme = extendTheme({
   fonts: {
@@ -8,13 +10,19 @@ const theme = extendTheme({
   },
 });
 
+const client = new ApolloClient({
+  uri: `http://localhost:${PORT}/api/graphql`,
+  cache: new InMemoryCache(),
+});
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <ApolloProvider client={client}>
+      <ChakraProvider theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </ApolloProvider>
   );
 }
 
 export default MyApp;
- 

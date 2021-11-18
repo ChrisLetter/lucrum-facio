@@ -9,11 +9,26 @@ import {
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import { IRegisterFormErrors } from './../interfaces/interfaces';
+import { useMutation } from '@apollo/client';
+import { REGISTER_USER } from './../graphql/apolloClient/mutations';
 
 const Register = () => {
-  function sumbit() {
-    console.log('here');
+  // TODO: write interface for this input
+
+  const [mutateFunction, { data, loading, error }] = useMutation(REGISTER_USER);
+
+  async function submit(values: any) {
+    await mutateFunction({
+      variables: {
+        registrationInput: {
+          email: values.email,
+          username: values.username,
+          password: values.password,
+        },
+      },
+    });
   }
+
   return (
     <Flex
       align="center"
@@ -46,10 +61,8 @@ const Register = () => {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+          submit(values);
+          setSubmitting(false);
         }}
       >
         {({
