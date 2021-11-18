@@ -24,7 +24,8 @@ export const resolvers = {
           'there was an error creating the account',
         );
       }
-
+      const hashedPass = await bcrypt.hash(registrationInput.password, 10);
+      registrationInput.password = hashedPass;
       const user = await prisma.user.create({
         data: registrationInput,
       });
@@ -37,10 +38,15 @@ export const resolvers = {
           email: loginInput.email,
         },
       });
-      console.log(userInfo);
-      if (userInfo?.id) {
+      const isPasswordCorrect = await bcrypt.compare(
+        loginInput.password,
+        userInfo?.password,
+      );
+      if (userInfo?.id && isPasswordCorrect) {
         const token = createToken(userInfo.id);
         return { token, user: userInfo };
+      } else {
+        throw new AuthenticationError('wrong email or password');
       }
     },
   },
