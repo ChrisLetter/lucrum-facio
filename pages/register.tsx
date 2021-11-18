@@ -11,19 +11,36 @@ import { Field, Form, Formik } from 'formik';
 import {
   IRegisterFormValues,
   IRegisterFormErrors,
+  IHolding,
 } from './../interfaces/interfaces';
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from './../graphql/apolloClient/mutations';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 
 const Register = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [errors, setErrors] = useState('');
   const [mutateFunction, { data, loading, error }] = useMutation(
     REGISTER_USER,
     {
       onCompleted({ register }) {
         if (register) {
-          console.log(register);
+          const username = register.user.username;
+          const accessToken = register.token;
+          const userInfo = {
+            username,
+            accessToken,
+            holdings: [],
+          };
+          // I set the holdings to an empty array since this is a new user
+          dispatch({
+            type: 'AUTHENTICATE_USER',
+            payload: { ...userInfo },
+          });
+          router.push('/dashboard');
         }
       },
       onError(err: any) {
