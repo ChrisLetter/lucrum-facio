@@ -22,10 +22,20 @@ model User {
 
 model Holding {
   id        Int     @default(autoincrement()) @id
-  name     String
   location  String
   quantity Int
   apy   Float
   userId  Int
+  cryptoId Int
+  crypto  Crypto  @relation(fields: [cryptoId], references: [id])
   owner   User   @relation(fields: [userId], references: [id])
+}
+
+model Crypto {
+  id   Int     @default(autoincrement()) @id
+  idCoinGecko String
+  name  String
+  symbol   String
+  image   String
+  holders Holding[]
 }
