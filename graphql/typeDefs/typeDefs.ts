@@ -36,7 +36,7 @@ export const typeDefs = gql`
     username: String!
   }
   type Query {
-    getUsers: [user]
+    getCoins: [crypto]
   }
   input loginUserInput {
     email: String!

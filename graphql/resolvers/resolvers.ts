@@ -5,12 +5,14 @@ const prisma = new PrismaClient();
 const { authenticated, createToken } = require('./auth');
 import { IRegisterInput, ILoginInput } from './../../interfaces/interfaces';
 
+// TODO: authenticate routes when finished
+
 export const resolvers = {
   Query: {
-    getUsers: authenticated(async (_: any, __: any, context: any) => {
-      const res = await prisma.user.findMany();
-      return res;
-    }),
+    getCoins: async (_: any, __: any, context: any) => {
+      const cryptos = await prisma.crypto.findMany();
+      return cryptos;
+    },
   },
   Mutation: {
     async register(_: any, { registrationInput }: IRegisterInput) {

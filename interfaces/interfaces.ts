@@ -47,7 +47,7 @@ export interface IHolding {
 }
 
 export interface ICryptoInfo {
-  id: string;
+  idCoinGecko: string;
   symbol: string;
   image: string;
   name: string;

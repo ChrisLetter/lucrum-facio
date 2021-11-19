@@ -23,3 +23,14 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const GET_COINS = gql`
+  query {
+    getCoins {
+      idCoinGecko
+      name
+      symbol
+      image
+    }
+  }
+`;
