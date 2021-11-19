@@ -1,7 +1,7 @@
 import { Flex, Input, Button, Text, Heading } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
-const DashBoard = () => {
+const AddNewCrypto = () => {
   const token =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
   const userInfos = useSelector((state) => {
@@ -19,11 +19,12 @@ const DashBoard = () => {
     >
       {console.log(userInfos)}
       {console.log(token)}
+
       <Heading as="h1" size="2xl">
-        Your Holdings
+        AddNewCrypto
       </Heading>
     </Flex>
   );
 };
 
-export default DashBoard;
+export default AddNewCrypto;

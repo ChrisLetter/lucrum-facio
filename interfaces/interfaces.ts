@@ -10,7 +10,6 @@ export interface IRegisterFormValues {
   username: string;
 }
 
-
 export interface ILoginFormErrors {
   email?: string;
   password?: string;
@@ -37,7 +36,6 @@ export interface ILoginInput {
 
 export interface IUserInfo {
   username: string;
-  accessToken: string;
   holdings: IHolding[];
 }
 
@@ -48,3 +46,9 @@ export interface IHolding {
   apy: number;
 }
 
+export interface ICryptoInfo {
+  id: string;
+  symbol: string;
+  image: string;
+  name: string;
+}

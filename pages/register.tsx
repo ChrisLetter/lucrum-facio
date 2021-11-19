@@ -29,10 +29,9 @@ const Register = () => {
       onCompleted({ register }) {
         if (register) {
           const username = register.username;
-          const accessToken = register.token;
+          localStorage.setItem('accessToken', register.token);
           const userInfo = {
             username,
-            accessToken,
             holdings: [],
           };
           // I set the holdings to an empty array since this is a new user

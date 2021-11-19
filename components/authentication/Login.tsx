@@ -24,12 +24,11 @@ function Login() {
   const [mutateFunction, { data, loading, error }] = useMutation(LOGIN_USER, {
     onCompleted({ login }) {
       if (login) {
+        localStorage.setItem('accessToken', login.token);
         const username = login.username;
-        const accessToken = login.token;
         const holdings = login.holdings;
         const userInfo = {
           username,
-          accessToken,
           holdings,
         };
         // I set the holdings to an empty array since this is a new user
@@ -41,8 +40,7 @@ function Login() {
       }
     },
     onError(err: any) {
-      console.log(err);
-      // setErrors(err.graphQLErrors[0].message);
+      setErrors('Invalid email or password, please try again');
     },
   });
 
@@ -131,6 +129,7 @@ function Login() {
           </form>
         )}
       </Formik>
+      {errors}
     </Flex>
   );
 }

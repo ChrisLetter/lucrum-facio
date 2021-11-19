@@ -1,13 +1,15 @@
 import { Flex, Input, Button, Text, Heading } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
-const DashBoard = () => {
+const AddNewCryptoDetails = () => {
+  const router = useRouter();
   const token =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
   const userInfos = useSelector((state) => {
     return state;
   });
-
+  const { crypto } = router.query;
   return (
     <Flex
       align="center"
@@ -19,11 +21,12 @@ const DashBoard = () => {
     >
       {console.log(userInfos)}
       {console.log(token)}
+
       <Heading as="h1" size="2xl">
-        Your Holdings
+        {crypto}
       </Heading>
     </Flex>
   );
 };
 
-export default DashBoard;
+export default AddNewCryptoDetails;
