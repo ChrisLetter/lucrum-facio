@@ -1488,18 +1488,6 @@
     "image": "https://assets.coingecko.com/coins/images/14773/large/token-mango.png?1628171237"
   },
   {
-    "id": "civic",
-    "name": "Civic",
-    "symbol": "cvc",
-    "image": "https://assets.coingecko.com/coins/images/788/large/Civic-logo-blue.png?1636393120"
-  },
-  {
-    "id": "conflux-token",
-    "name": "Conflux",
-    "symbol": "cfx",
-    "image": "https://assets.coingecko.com/coins/images/13079/large/3vuYMbjN.png?1631512305"
-  },
-  {
     "id": "conflux-token",
     "name": "Conflux",
     "symbol": "cfx",

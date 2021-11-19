@@ -17,8 +17,8 @@ export const LOGIN_USER = gql`
       holdings {
         location
         quantity
-        name
         apy
+        cryptoId
       }
     }
   }

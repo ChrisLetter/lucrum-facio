@@ -26,14 +26,13 @@ model Holding {
   quantity Int
   apy   Float
   userId  Int
-  cryptoId Int
-  crypto  Crypto  @relation(fields: [cryptoId], references: [id])
+  cryptoId String
+  crypto  Crypto  @relation(fields: [cryptoId], references: [idCoinGecko])
   owner   User   @relation(fields: [userId], references: [id])
 }
 
 model Crypto {
-  id   Int     @default(autoincrement()) @id
-  idCoinGecko String
+  idCoinGecko String  @id
   name  String
   symbol   String
   image   String

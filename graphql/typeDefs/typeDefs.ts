@@ -10,12 +10,21 @@ export const typeDefs = gql`
   }
   type holding {
     id: Int!
-    name: String!
     location: String!
     quantity: String!
     apy: String!
     userId: Int!
-    owner: user!
+    cryptoId: String!
+    crypto: crypto
+    owner: user
+  }
+  type crypto {
+    id: Int!
+    idCoinGecko: String!
+    name: String!
+    symbol: String!
+    image: String!
+    holders: [holding]
   }
   type loggedUser {
     token: String!
