@@ -1,17 +1,17 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Login from '../../components/authentication/Login';
+import Login from '../components/authentication/Login';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import reducers from '../../redux/reducers';
+import reducers from '../redux/reducers';
 const initialState = {
   username: '',
   holdings: [],
 };
 let store = createStore(reducers, initialState);
 import { MockedProvider } from '@apollo/react-testing';
-import { LOGIN_USER } from './../../graphql/apolloClient/mutations';
+import { LOGIN_USER } from '../graphql/apolloClient/mutations';
 
 const mocks = [
   {
