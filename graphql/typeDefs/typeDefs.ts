@@ -45,10 +45,17 @@ export const typeDefs = gql`
   type Mutation {
     register(registrationInput: registerUserInput): newUser
     login(loginInput: loginUserInput): loggedUser
+    addCrypto(addCryptoInput: addCryptoUserInput): String!
   }
   input registerUserInput {
     username: String!
     email: String!
     password: String!
+  }
+  input addCryptoUserInput {
+    crypto: String!
+    stakingProvider: String!
+    quantity: String!
+    apy: String!
   }
 `;

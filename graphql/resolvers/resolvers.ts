@@ -3,7 +3,11 @@ const { AuthenticationError } = require('apollo-server');
 const bcrypt = require('bcrypt');
 const prisma = new PrismaClient();
 const { authenticated, createToken } = require('./auth');
-import { IRegisterInput, ILoginInput } from './../../interfaces/interfaces';
+import {
+  IRegisterInput,
+  ILoginInput,
+  IAddCryptoInput,
+} from './../../interfaces/interfaces';
 
 // TODO: authenticate routes when finished
 
@@ -56,6 +60,9 @@ export const resolvers = {
       } else {
         throw new AuthenticationError('wrong email or password');
       }
+    },
+    async addCrypto(_: any, { addCryptoInput }: IAddCryptoInput, context: any) {
+      console.log(context.user);
     },
   },
 };

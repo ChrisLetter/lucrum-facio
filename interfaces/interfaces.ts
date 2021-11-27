@@ -52,3 +52,24 @@ export interface ICryptoInfo {
   image: string;
   name: string;
 }
+
+export interface IAddCryptoFormErrors {
+  stakingProvider?: string;
+  quantity?: string;
+  apy?: string;
+}
+
+export interface IAddCryptoFormInput {
+  stakingProvider?: string;
+  quantity?: string;
+  apy?: string;
+}
+
+export interface IAddCryptoInput {
+  addCryptoInput: {
+    crypto: string;
+    stakingProvider: string;
+    quantity: string;
+    apy: string;
+  };
+}

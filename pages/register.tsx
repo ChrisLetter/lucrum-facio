@@ -44,7 +44,6 @@ const Register = () => {
       },
       onError(err: any) {
         console.log(err);
-        // setErrors(err.graphQLErrors[0].message);
       },
     },
   );
