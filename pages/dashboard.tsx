@@ -1,11 +1,11 @@
 import { Flex, Input, Button, Text, Heading } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { helperFunctions } from './../utils/helperFunction';
 
 const DashBoard = () => {
   const router = useRouter();
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
   const userInfos = useSelector((state) => {
     return state;
   });
@@ -13,6 +13,10 @@ const DashBoard = () => {
   function goToNewCrypto() {
     router.push('/add-crypto');
   }
+
+  useEffect(() => {
+    helperFunctions.aggregate(userInfos);
+  }, [userInfos]);
 
   return (
     <Flex
@@ -24,7 +28,6 @@ const DashBoard = () => {
       direction="column"
     >
       {console.log(userInfos)}
-      {console.log(token)}
       <Heading as="h1" size="2xl">
         Your Holdings
       </Heading>

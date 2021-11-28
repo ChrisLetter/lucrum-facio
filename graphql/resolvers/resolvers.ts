@@ -67,7 +67,6 @@ export const resolvers = {
           name: addCryptoInput.crypto,
         },
       });
-
       await prisma.holding.create({
         data: {
           location: addCryptoInput.stakingProvider,

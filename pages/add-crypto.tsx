@@ -1,20 +1,21 @@
 import { Flex, Input, Button, Text, Heading } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
-import { GET_COINS, ADD_CRYPTO } from './../../graphql/apolloClient/mutations';
+import { GET_COINS, ADD_CRYPTO } from '../graphql/apolloClient/mutations';
 import { useQuery, useMutation } from '@apollo/client';
-
+import { useRouter } from 'next/router';
 import {
   ICryptoInfo,
   IAddCryptoFormErrors,
   IAddCryptoFormInput,
-} from './../../interfaces/interfaces';
+} from '../interfaces/interfaces';
 import { useState } from 'react';
 import { Field, Form, Formik } from 'formik';
 
 // TODO: remove any
 
 const AddNewCrypto = () => {
+  const router = useRouter();
   const token =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
   const userInfos = useSelector((state) => {
@@ -64,6 +65,7 @@ const AddNewCrypto = () => {
           },
         },
       });
+      router.push('/dashboard');
     }
   }
 
