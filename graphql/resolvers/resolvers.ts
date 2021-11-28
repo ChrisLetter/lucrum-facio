@@ -62,7 +62,22 @@ export const resolvers = {
       }
     },
     async addCrypto(_: any, { addCryptoInput }: IAddCryptoInput, context: any) {
-      console.log(context.user);
+      const cryptoId = await prisma.crypto.findMany({
+        where: {
+          name: addCryptoInput.crypto,
+        },
+      });
+
+      await prisma.holding.create({
+        data: {
+          location: addCryptoInput.stakingProvider,
+          quantity: Number(addCryptoInput.quantity),
+          apy: Number(addCryptoInput.apy),
+          userId: Number(context.user.id),
+          cryptoId: cryptoId[0].idCoinGecko,
+        },
+      });
+      return { response: 'Added correctly to your portfolio' };
     },
   },
 };

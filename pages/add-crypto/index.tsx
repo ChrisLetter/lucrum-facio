@@ -1,8 +1,9 @@
 import { Flex, Input, Button, Text, Heading } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
-import { GET_COINS } from './../../graphql/apolloClient/mutations';
-import { useQuery } from '@apollo/client';
+import { GET_COINS, ADD_CRYPTO } from './../../graphql/apolloClient/mutations';
+import { useQuery, useMutation } from '@apollo/client';
+
 import {
   ICryptoInfo,
   IAddCryptoFormErrors,
@@ -23,7 +24,7 @@ const AddNewCrypto = () => {
   const options: any = [];
   const [errors, setErrors] = useState('');
 
-  const { data } = useQuery(GET_COINS, {
+  useQuery(GET_COINS, {
     onCompleted({ getCoins }) {
       getCoins.forEach((coin: ICryptoInfo) => {
         const option = {
@@ -34,14 +35,36 @@ const AddNewCrypto = () => {
       });
     },
   });
+
+  const [mutateFunction, { data, loading, error }] = useMutation(ADD_CRYPTO, {
+    onCompleted({ addCrypto }) {
+      if (addCrypto) {
+        console.log(addCrypto.response);
+      }
+    },
+    onError(err: any) {
+      console.log(err);
+    },
+  });
+
   const handleSelection = (event: any): void => {
     setSelection(event);
   };
 
   async function submit(values: IAddCryptoFormInput) {
-    console.log('values', values);
-    console.log('selection', selection);
-    console.log('token', token);
+    if (selection) {
+      const { value } = selection;
+      await mutateFunction({
+        variables: {
+          addCryptoInput: {
+            crypto: value,
+            stakingProvider: values.stakingProvider,
+            quantity: values.quantity,
+            apy: values.apy,
+          },
+        },
+      });
+    }
   }
 
   return (

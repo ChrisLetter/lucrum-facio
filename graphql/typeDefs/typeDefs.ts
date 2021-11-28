@@ -38,6 +38,9 @@ export const typeDefs = gql`
   type Query {
     getCoins: [crypto]
   }
+  type addNewCryptoResponse {
+    response: String!
+  }
   input loginUserInput {
     email: String!
     password: String!
@@ -45,7 +48,7 @@ export const typeDefs = gql`
   type Mutation {
     register(registrationInput: registerUserInput): newUser
     login(loginInput: loginUserInput): loggedUser
-    addCrypto(addCryptoInput: addCryptoUserInput): String!
+    addCrypto(addCryptoInput: addCryptoUserInput): addNewCryptoResponse!
   }
   input registerUserInput {
     username: String!

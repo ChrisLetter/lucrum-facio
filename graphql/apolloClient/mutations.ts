@@ -24,6 +24,14 @@ export const LOGIN_USER = gql`
   }
 `;
 
+export const ADD_CRYPTO = gql`
+  mutation ($addCryptoInput: addCryptoUserInput) {
+    addCrypto(addCryptoInput: $addCryptoInput) {
+      response
+    }
+  }
+`;
+
 export const GET_COINS = gql`
   query {
     getCoins {
