@@ -1,6 +1,6 @@
-import { IUserInfo } from './../interfaces/interfaces';
+import { IHolding } from './../interfaces/interfaces';
 export const helperFunctions: { [key: string]: any } = {};
 
-helperFunctions.aggregate = function (userInfo: IUserInfo) {
-  console.log(userInfo.holdings);
+helperFunctions.aggregate = function (holdings: IHolding[]) {
+  console.log(holdings);
 };

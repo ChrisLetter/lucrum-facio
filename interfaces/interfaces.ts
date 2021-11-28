@@ -73,3 +73,4 @@ export interface IAddCryptoInput {
     apy: string;
   };
 }
+
