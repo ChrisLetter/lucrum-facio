@@ -38,6 +38,7 @@ export const resolvers = {
       const token = createToken(id);
       return { token, username };
     },
+
     async login(_: any, { loginInput }: ILoginInput) {
       const userInfo = await prisma.user.findUnique({
         where: {
@@ -61,6 +62,7 @@ export const resolvers = {
         throw new AuthenticationError('wrong email or password');
       }
     },
+
     async addCrypto(_: any, { addCryptoInput }: IAddCryptoInput, context: any) {
       const cryptoId = await prisma.crypto.findMany({
         where: {
