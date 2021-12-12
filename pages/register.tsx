@@ -65,12 +65,12 @@ const Register = () => {
       align="center"
       justifyContent="center"
       height="100vh"
-      bg="purple.700"
-      color="white"
+      bg="white"
+      color="purple.700"
       direction="column"
     >
-      <Text fontSize="2xl" mb="1vh">
-        Register a new account
+      <Text fontSize="3xl" mb="3vh">
+        Create a new account
       </Text>
       <Formik
         initialValues={{ username: '', email: '', password: '' }}
@@ -113,6 +113,7 @@ const Register = () => {
                 color="black"
                 name="username"
                 placeholder="Username"
+                boxShadow="md"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.username}
@@ -123,6 +124,7 @@ const Register = () => {
                 mb="1vh"
                 mt="1vh"
                 color="black"
+                boxShadow="md"
                 type="email"
                 name="email"
                 placeholder="Email"
@@ -136,6 +138,7 @@ const Register = () => {
                 mb="1vh"
                 mt="1vh"
                 color="black"
+                boxShadow="md"
                 type="password"
                 placeholder="Password"
                 name="password"
@@ -148,8 +151,9 @@ const Register = () => {
               </Text>
               <Button
                 alignSelf="center"
-                color="black"
-                boxShadow="lg"
+                backgroundColor="purple.400"
+                color="white"
+                boxShadow="md"
                 type="submit"
                 disabled={isSubmitting}
               >

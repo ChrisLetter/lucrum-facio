@@ -23,14 +23,19 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
       align="center"
       justifyContent="space-evenly"
       height="100vh"
-      bg="purple.700"
-      color="white"
+      bg="white"
+      color="black"
       direction="column"
     >
       <Heading as="h1" size="2xl">
         Your Holdings
       </Heading>
-      <Button colorScheme="blue" onClick={goToNewCrypto}>
+      <Button
+        color="white"
+        backgroundColor="purple.400"
+        boxShadow="md"
+        onClick={goToNewCrypto}
+      >
         Add New Crypto
       </Button>
     </Flex>

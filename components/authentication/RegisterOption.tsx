@@ -7,12 +7,14 @@ function RegisterOption() {
 
   return (
     <Flex direction="column" align="center">
-      <Text fontSize="2xl" mb="1vh" mt="8vh">
+      <Text color="black" fontSize="xl" mb="1vh" mt="8vh">
         Or create an account
       </Text>
       <Button
-        color="black"
-        boxShadow="lg"
+          alignSelf="center"
+          backgroundColor="purple.400"
+          color="white"
+          boxShadow="md"
         onClick={() => router.push('/register')}
       >
         Register

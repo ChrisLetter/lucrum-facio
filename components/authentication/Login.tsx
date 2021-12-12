@@ -57,8 +57,8 @@ function Login() {
 
   return (
     <Flex direction="column" align="center">
-      <Text fontSize="2xl" mb="1vh">
-        Login
+      <Text color="black" fontSize="xl" mb="1vh">
+        Enter your credentials
       </Text>
       <Formik
         initialValues={{ email: '', password: '' }}
@@ -90,6 +90,8 @@ function Login() {
             <Flex direction="column" width="30vw" align="center">
               <Input
                 backgroundColor="white"
+                border="1px solid black"
+                boxShadow="md"
                 mb="1vh"
                 mt="1vh"
                 color="black"
@@ -104,6 +106,7 @@ function Login() {
               <Input
                 backgroundColor="white"
                 mb="1vh"
+                boxShadow="md"
                 mt="1vh"
                 color="black"
                 type="password"
@@ -118,8 +121,9 @@ function Login() {
               </Text>
               <Button
                 alignSelf="center"
-                color="black"
-                boxShadow="lg"
+                backgroundColor="purple.400"
+                color="white"
+                boxShadow="md"
                 type="submit"
                 disabled={isSubmitting}
               >

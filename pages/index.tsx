@@ -9,8 +9,8 @@ const Home = () => {
       align="center"
       justifyContent="space-evenly"
       height="100vh"
-      bg="purple.700"
-      color="white"
+      bg="white"
+      color="purple.700"
       direction="column"
     >
       <Heading as="h1" size="4xl">

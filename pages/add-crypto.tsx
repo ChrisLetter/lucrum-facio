@@ -72,14 +72,14 @@ const AddNewCrypto = () => {
   return (
     <Flex
       align="center"
-      justifyContent="space-evenly"
+      justifyContent="center"
       height="100vh"
       bg="white"
       color="black"
       direction="column"
     >
-      <Heading as="h1" size="xl">
-        Add a new position
+      <Heading as="h1" size="xl" pb="10vh">
+        Insert a new position
       </Heading>
       <Flex
         align="center"
@@ -93,7 +93,7 @@ const AddNewCrypto = () => {
           value={selection}
           onChange={(event) => handleSelection(event)}
           options={options}
-          placeholder={'Select crypto from the dropdown menu'}
+          placeholder={'Select crypto from the menu'}
         />
         <Formik
           initialValues={{ stakingProvider: '', quantity: '', apy: '' }}
@@ -136,6 +136,8 @@ const AddNewCrypto = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.stakingProvider}
+                boxShadow="md"
+
                 />
                 {errors.stakingProvider &&
                   touched.stakingProvider &&
@@ -150,6 +152,8 @@ const AddNewCrypto = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.quantity}
+                boxShadow="md"
+
                 />
                 {errors.quantity && touched.quantity && errors.quantity}
                 <Input
@@ -163,6 +167,8 @@ const AddNewCrypto = () => {
                   onBlur={handleBlur}
                   value={values.apy}
                   border="2px solid #000"
+                boxShadow="md"
+
                 />
                 <Text mb="2vh">{errors.apy && touched.apy && errors.apy}</Text>
                 <Button
