@@ -1,20 +1,29 @@
 import { Flex, Input, Button, Text, Heading } from '@chakra-ui/react';
 import { connect } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { helperFunctions } from './../utils/helperFunction';
 import { IUserInfo } from './../interfaces/interfaces';
 
 const DashBoard = ({ username, holdings }: IUserInfo) => {
   const router = useRouter();
-
+  const [netWorth, setNetWorth] = useState('');
+  const [usdApyEstimate, setUsdApyEstimate] = useState('');
+  const [totalApy, setTotalApy] = useState('');
   function goToNewCrypto() {
     router.push('/add-crypto');
   }
-  // console.log({ holdings });
+
   useEffect(() => {
     if (holdings.length) {
-      helperFunctions.aggregate(holdings);
+      const aggregate = async function () {
+        const { usdNetWorth, usdApyEstimate, totalApy } =
+          await helperFunctions.aggregate(holdings);
+        setNetWorth(usdNetWorth);
+        setUsdApyEstimate(usdApyEstimate);
+        setTotalApy(totalApy);
+      };
+      aggregate();
     }
   }, [holdings]);
 
@@ -30,6 +39,9 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
       <Heading as="h1" size="2xl">
         Your Holdings
       </Heading>
+      <Text>Your net worth: {netWorth} $</Text>
+      <Text>Your estimate apy: {totalApy} $</Text>
+      <Text>You will earn: {usdApyEstimate} %</Text>
       <Button
         color="white"
         backgroundColor="purple.400"

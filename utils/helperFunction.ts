@@ -9,13 +9,14 @@ helperFunctions.aggregate = async function (holdings: IHoldingFromDb[]) {
   const usdNetWorth = calculateUsdValue(sumHoldings, prices);
   const usdApyEstimate = calculateUsdValue(sumApy, prices);
   const totalApy = calculateTotalApy(usdNetWorth, usdApyEstimate);
-  console.log(usdNetWorth);
-  console.log(usdApyEstimate);
-  console.log(totalApy);
-  console.log({ sumApy });
-  console.log({ prices });
-  console.log({ sumHoldings });
-  console.log({ holdings });
+  // console.log(usdNetWorth);
+  // console.log(usdApyEstimate);
+  // console.log(totalApy);
+  // console.log({ sumApy });
+  // console.log({ prices });
+  // console.log({ sumHoldings });
+  // console.log({ holdings });
+  return { usdNetWorth, usdApyEstimate, totalApy };
 };
 
 function sumAllHoldings(holdings: IHoldingFromDb[]) {
@@ -79,5 +80,5 @@ function sumAllApy(holdings: IHoldingFromDb[]) {
 }
 
 function calculateTotalApy(netWorth: string, apy: string) {
-  return ((Number(apy) / Number(netWorth)) * 100).toFixed(2).toString() + '%';
+  return ((Number(apy) / Number(netWorth)) * 100).toFixed(2).toString();
 }
