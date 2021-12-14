@@ -2,20 +2,25 @@ import { IHoldingFromDb } from './../interfaces/interfaces';
 export const helperFunctions: { [key: string]: any } = {};
 
 helperFunctions.aggregate = async function (holdings: IHoldingFromDb[]) {
+  const sumHoldings = sumAllHoldings(holdings);
+  const whichCoins = whichCoinsPriceToQuery(sumHoldings);
+  const prices = await retrievePrices(whichCoins);
+  const usdNetWorth = netWorth(sumHoldings, prices);
+  console.log(usdNetWorth);
+  console.log({ prices });
+  console.log({ sumHoldings });
+  console.log({ holdings });
+};
+
+function sumAllHoldings(holdings: IHoldingFromDb[]) {
   const total: any = {};
   for (let el of holdings) {
     !total[el.cryptoId]
       ? (total[el.cryptoId] = Number(el.quantity))
       : (total[el.cryptoId] += Number(el.quantity));
   }
-  const whichCoins = whichCoinsPriceToQuery(total);
-  const prices = await retrievePrices(whichCoins);
-  const usdNetWorth = netWorth(total, prices);
-  console.log(usdNetWorth);
-  // console.log({ prices });
-  // console.log({ total });
-  // console.log({ holdings });
-};
+  return total;
+}
 
 function whichCoinsPriceToQuery(totalHoldings: { [key: string]: number }) {
   const coins = [];
