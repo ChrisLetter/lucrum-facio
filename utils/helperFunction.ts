@@ -26,12 +26,30 @@ function whichCoinsPriceToQuery(totalHoldings: { [key: string]: number }) {
 
 async function retrievePrices(coins: string) {
   const prices: { [key: string]: any } = {};
-  const res = await fetch(
-    `https://api.coingecko.com/api/v3/simple/price?ids=${coins}&vs_currencies=usd`,
-  );
-  const json = await res.json();
-  for (let el in json) {
-    prices[el] = json[el].usd;
+  const time = await localStorage.getItem('time');
+  const now = new Date().getTime().toString();
+  if (time === null || Number(now) - Number(time) > 300000) {
+    const res = await fetch(
+      `https://api.coingecko.com/api/v3/simple/price?ids=${coins}&vs_currencies=usd`,
+    );
+    const json = await res.json();
+    for (let el in json) {
+      prices[el] = json[el].usd;
+    }
+    localStorage.setItem('prices', JSON.stringify(prices));
+    localStorage.setItem('time', now);
+    return prices;
+  } else {
+    const cachedPrices = await localStorage.getItem('prices');
+    if (cachedPrices) return JSON.parse(cachedPrices);
   }
-  return prices;
 }
+
+// function netWorth (
+//   holdings: { [key: string]: number },
+//   prices: { [key: string]: number },
+// ) {
+//   for (let el in holdings) {
+
+//   }
+// };
