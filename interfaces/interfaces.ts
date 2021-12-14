@@ -46,6 +46,13 @@ export interface IHolding {
   apy: number;
 }
 
+export interface IHoldingFromDb {
+  apy: number;
+  cryptoId: string;
+  location: string;
+  quantity: string;
+}
+
 export interface ICryptoInfo {
   idCoinGecko: string;
   symbol: string;
@@ -73,4 +80,3 @@ export interface IAddCryptoInput {
     apy: string;
   };
 }
-

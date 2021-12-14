@@ -11,9 +11,7 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
   function goToNewCrypto() {
     router.push('/add-crypto');
   }
-  console.log({ holdings });
-  console.log({ username });
-
+  // console.log({ holdings });
   useEffect(() => {
     helperFunctions.aggregate(holdings);
   }, [holdings]);
