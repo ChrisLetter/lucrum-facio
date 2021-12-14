@@ -10,10 +10,11 @@ helperFunctions.aggregate = async function (holdings: IHoldingFromDb[]) {
   }
   const whichCoins = whichCoinsPriceToQuery(total);
   const prices = await retrievePrices(whichCoins);
-  console.log({ prices });
-
-  console.log({ total });
-  console.log({ holdings });
+  const usdNetWorth = netWorth(total, prices);
+  console.log(usdNetWorth);
+  // console.log({ prices });
+  // console.log({ total });
+  // console.log({ holdings });
 };
 
 function whichCoinsPriceToQuery(totalHoldings: { [key: string]: number }) {
@@ -45,11 +46,13 @@ async function retrievePrices(coins: string) {
   }
 }
 
-// function netWorth (
-//   holdings: { [key: string]: number },
-//   prices: { [key: string]: number },
-// ) {
-//   for (let el in holdings) {
-
-//   }
-// };
+function netWorth(
+  holdings: { [key: string]: number },
+  prices: { [key: string]: number },
+) {
+  let total = 0;
+  for (let el in holdings) {
+    total += holdings[el] * prices[el];
+  }
+  return total.toFixed(2);
+}

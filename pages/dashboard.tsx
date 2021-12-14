@@ -13,7 +13,9 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
   }
   // console.log({ holdings });
   useEffect(() => {
-    helperFunctions.aggregate(holdings);
+    if (holdings.length) {
+      helperFunctions.aggregate(holdings);
+    }
   }, [holdings]);
 
   return (
