@@ -3,10 +3,16 @@ export const helperFunctions: { [key: string]: any } = {};
 
 helperFunctions.aggregate = async function (holdings: IHoldingFromDb[]) {
   const sumHoldings = sumAllHoldings(holdings);
+  const sumApy = sumAllApy(holdings);
   const whichCoins = whichCoinsPriceToQuery(sumHoldings);
   const prices = await retrievePrices(whichCoins);
-  const usdNetWorth = netWorth(sumHoldings, prices);
+  const usdNetWorth = calculateUsdValue(sumHoldings, prices);
+  const usdApyEstimate = calculateUsdValue(sumApy, prices);
+  const totalApy = calculateTotalApy(usdNetWorth, usdApyEstimate);
   console.log(usdNetWorth);
+  console.log(usdApyEstimate);
+  console.log(totalApy);
+  console.log({ sumApy });
   console.log({ prices });
   console.log({ sumHoldings });
   console.log({ holdings });
@@ -51,7 +57,7 @@ async function retrievePrices(coins: string) {
   }
 }
 
-function netWorth(
+function calculateUsdValue(
   holdings: { [key: string]: number },
   prices: { [key: string]: number },
 ) {
@@ -60,4 +66,18 @@ function netWorth(
     total += holdings[el] * prices[el];
   }
   return total.toFixed(2);
+}
+
+function sumAllApy(holdings: IHoldingFromDb[]) {
+  const totalApy: any = {};
+  for (let el of holdings) {
+    !totalApy[el.cryptoId]
+      ? (totalApy[el.cryptoId] = Number(el.quantity) * (Number(el.apy) / 100))
+      : (totalApy[el.cryptoId] += Number(el.quantity) * (Number(el.apy) / 100));
+  }
+  return totalApy;
+}
+
+function calculateTotalApy(netWorth: string, apy: string) {
+  return ((Number(apy) / Number(netWorth)) * 100).toFixed(2).toString() + '%';
 }
