@@ -80,7 +80,7 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
       direction="column"
     >
       <Heading as="h1" size="2xl">
-        Your Holdings
+  Portfolio
       </Heading>
       <Flex direction="row">
         <Box height="60vh" width="100vh">
@@ -92,9 +92,24 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
           direction="column"
           justifyContent="space-evenly"
         >
-          <Text>Your net worth: {netWorth} $</Text>
-          <Text>Your estimate apy: {totalApy} %</Text>
-          <Text>You will earn: {usdApyEstimate} $</Text>
+          <Flex direction="column" align="center">
+            <Text>Total net worth: &nbsp;</Text>
+            <Heading as="h4" size="lg">
+              {netWorth} $
+            </Heading>
+          </Flex>
+          <Flex direction="column" align="center">
+            <Text>Total estimated apy: &nbsp;</Text>
+            <Heading as="h4" size="lg">
+              {totalApy} %
+            </Heading>
+          </Flex>
+          <Flex direction="column" align="center">
+            <Text>At current prices, you will earn: &nbsp;</Text>
+            <Heading as="h4" size="lg">
+              {usdApyEstimate} $/year
+            </Heading>
+          </Flex>
           <Button
             color="white"
             backgroundColor="purple.400"
