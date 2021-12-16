@@ -11,6 +11,7 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
   const [netWorth, setNetWorth] = useState('');
   const [usdApyEstimate, setUsdApyEstimate] = useState('');
   const [totalApy, setTotalApy] = useState('');
+  const [pieChartStats, setPieChartStats] = useState(null);
   function goToNewCrypto() {
     router.push('/add-crypto');
   }
@@ -18,11 +19,12 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
   useEffect(() => {
     if (holdings.length) {
       const aggregate = async function () {
-        const { usdNetWorth, usdApyEstimate, totalApy } =
+        const { usdNetWorth, usdApyEstimate, totalApy, dataPieChart } =
           await helperFunctions.aggregate(holdings);
         setNetWorth(usdNetWorth);
         setUsdApyEstimate(usdApyEstimate);
         setTotalApy(totalApy);
+        setPieChartStats(dataPieChart);
       };
       aggregate();
     }

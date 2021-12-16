@@ -1,5 +1,6 @@
 import { IHoldingFromDb } from './../interfaces/interfaces';
 export const helperFunctions: { [key: string]: any } = {};
+import { colors } from './colors';
 
 helperFunctions.aggregate = async function (holdings: IHoldingFromDb[]) {
   const sumHoldings = sumAllHoldings(holdings);
@@ -10,15 +11,17 @@ helperFunctions.aggregate = async function (holdings: IHoldingFromDb[]) {
   const usdApyEstimate = calculateTotalUsdValue(sumApy, prices);
   const totalApy = calculateTotalApy(usdNetWorth, usdApyEstimate);
   const usdSingularCrypto = calculateSingleUsdValue(sumHoldings, prices);
+  const dataPieChart = produceDataForPieChart(usdSingularCrypto);
   // console.log(usdNetWorth);
   // console.log(usdApyEstimate);
   // console.log(totalApy);
   // console.log({ sumApy });
   // console.log({ prices });
-  console.log({ sumHoldings });
+  // console.log({ sumHoldings });
   // console.log({ holdings });
-  console.log({ usdSingularCrypto });
-  return { usdNetWorth, usdApyEstimate, totalApy };
+  // console.log({ usdSingularCrypto });
+
+  return { usdNetWorth, usdApyEstimate, totalApy, dataPieChart };
 };
 
 function sumAllHoldings(holdings: IHoldingFromDb[]) {
@@ -94,4 +97,19 @@ function sumAllApy(holdings: IHoldingFromDb[]) {
 
 function calculateTotalApy(netWorth: string, apy: string) {
   return ((Number(apy) / Number(netWorth)) * 100).toFixed(2).toString();
+}
+
+function produceDataForPieChart(cryptoAmounts: { [key: string]: string }) {
+  const data = [];
+  let counter = 0;
+  for (let el in cryptoAmounts) {
+    data.push({
+      id: el,
+      label: el,
+      value: Number(cryptoAmounts[el]),
+      color: colors[counter],
+    });
+    counter++;
+    return data;
+  }
 }
