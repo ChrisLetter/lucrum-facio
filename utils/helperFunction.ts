@@ -101,15 +101,12 @@ function calculateTotalApy(netWorth: string, apy: string) {
 
 function produceDataForPieChart(cryptoAmounts: { [key: string]: string }) {
   const data = [];
-  let counter = 0;
   for (let el in cryptoAmounts) {
     data.push({
       id: el,
       label: el,
       value: Number(cryptoAmounts[el]),
-      color: colors[counter],
     });
-    counter++;
-    return data;
   }
+  return data;
 }

@@ -1,4 +1,4 @@
-import { Flex, Input, Button, Text, Heading } from '@chakra-ui/react';
+import { Flex, Box, Button, Text, Heading } from '@chakra-ui/react';
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -11,7 +11,7 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
   const [netWorth, setNetWorth] = useState('');
   const [usdApyEstimate, setUsdApyEstimate] = useState('');
   const [totalApy, setTotalApy] = useState('');
-  const [pieChartStats, setPieChartStats] = useState(null);
+  const [pieChartStats, setPieChartStats] = useState([]);
   function goToNewCrypto() {
     router.push('/add-crypto');
   }
@@ -25,10 +25,50 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
         setUsdApyEstimate(usdApyEstimate);
         setTotalApy(totalApy);
         setPieChartStats(dataPieChart);
+        console.log(dataPieChart);
       };
       aggregate();
     }
   }, [holdings]);
+
+  const Pie = () => {
+    return (
+      <ResponsivePie
+        data={pieChartStats}
+        margin={{ top: 40, right: 80, bottom: 60, left: 80 }}
+        innerRadius={0.4}
+        padAngle={1}
+        cornerRadius={3}
+        colors={{ scheme: 'nivo' }}
+        activeOuterRadiusOffset={8}
+        borderWidth={1}
+        borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+        arcLinkLabelsSkipAngle={10}
+        arcLinkLabelsTextColor="#000"
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: 'color' }}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
+        legends={[
+          {
+            anchor: 'right',
+            direction: 'column',
+            justify: false,
+            translateX: 0,
+            translateY: 0,
+            itemsSpacing: 10,
+            itemWidth: 100,
+            itemHeight: 18,
+            itemTextColor: '#000',
+            itemDirection: 'left-to-right',
+            itemOpacity: 1,
+            symbolSize: 18,
+            symbolShape: 'circle',
+          },
+        ]}
+      />
+    );
+  };
 
   return (
     <Flex
@@ -42,17 +82,29 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
       <Heading as="h1" size="2xl">
         Your Holdings
       </Heading>
-      <Text>Your net worth: {netWorth} $</Text>
-      <Text>Your estimate apy: {totalApy} %</Text>
-      <Text>You will earn: {usdApyEstimate} $</Text>
-      <Button
-        color="white"
-        backgroundColor="purple.400"
-        boxShadow="md"
-        onClick={goToNewCrypto}
-      >
-        Add New Crypto
-      </Button>
+      <Flex direction="row">
+        <Box height="60vh" width="100vh">
+          <Pie />
+        </Box>
+        <Flex
+          width="50vw"
+          align="center"
+          direction="column"
+          justifyContent="space-evenly"
+        >
+          <Text>Your net worth: {netWorth} $</Text>
+          <Text>Your estimate apy: {totalApy} %</Text>
+          <Text>You will earn: {usdApyEstimate} $</Text>
+          <Button
+            color="white"
+            backgroundColor="purple.400"
+            boxShadow="md"
+            onClick={goToNewCrypto}
+          >
+            Add New Crypto
+          </Button>
+        </Flex>
+      </Flex>
     </Flex>
   );
 };
