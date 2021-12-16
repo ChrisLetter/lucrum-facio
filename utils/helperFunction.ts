@@ -6,16 +6,18 @@ helperFunctions.aggregate = async function (holdings: IHoldingFromDb[]) {
   const sumApy = sumAllApy(holdings);
   const whichCoins = whichCoinsPriceToQuery(sumHoldings);
   const prices = await retrievePrices(whichCoins);
-  const usdNetWorth = calculateUsdValue(sumHoldings, prices);
-  const usdApyEstimate = calculateUsdValue(sumApy, prices);
+  const usdNetWorth = calculateTotalUsdValue(sumHoldings, prices);
+  const usdApyEstimate = calculateTotalUsdValue(sumApy, prices);
   const totalApy = calculateTotalApy(usdNetWorth, usdApyEstimate);
+  const usdSingularCrypto = calculateSingleUsdValue(sumHoldings, prices);
   // console.log(usdNetWorth);
   // console.log(usdApyEstimate);
   // console.log(totalApy);
   // console.log({ sumApy });
   // console.log({ prices });
-  // console.log({ sumHoldings });
+  console.log({ sumHoldings });
   // console.log({ holdings });
+  console.log({ usdSingularCrypto });
   return { usdNetWorth, usdApyEstimate, totalApy };
 };
 
@@ -58,7 +60,7 @@ async function retrievePrices(coins: string) {
   }
 }
 
-function calculateUsdValue(
+function calculateTotalUsdValue(
   holdings: { [key: string]: number },
   prices: { [key: string]: number },
 ) {
@@ -67,6 +69,17 @@ function calculateUsdValue(
     total += holdings[el] * prices[el];
   }
   return total.toFixed(2);
+}
+
+function calculateSingleUsdValue(
+  holdings: { [key: string]: number },
+  prices: { [key: string]: number },
+) {
+  const res: { [key: string]: string } = {};
+  for (let el in holdings) {
+    res[el] = (holdings[el] * prices[el]).toFixed(2);
+  }
+  return res;
 }
 
 function sumAllApy(holdings: IHoldingFromDb[]) {

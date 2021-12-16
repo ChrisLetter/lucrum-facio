@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { helperFunctions } from './../utils/helperFunction';
 import { IUserInfo } from './../interfaces/interfaces';
+import { ResponsivePie } from '@nivo/pie';
 
 const DashBoard = ({ username, holdings }: IUserInfo) => {
   const router = useRouter();
@@ -40,8 +41,8 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
         Your Holdings
       </Heading>
       <Text>Your net worth: {netWorth} $</Text>
-      <Text>Your estimate apy: {totalApy} $</Text>
-      <Text>You will earn: {usdApyEstimate} %</Text>
+      <Text>Your estimate apy: {totalApy} %</Text>
+      <Text>You will earn: {usdApyEstimate} $</Text>
       <Button
         color="white"
         backgroundColor="purple.400"
