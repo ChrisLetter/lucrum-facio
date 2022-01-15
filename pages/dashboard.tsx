@@ -80,7 +80,7 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
       direction="column"
     >
       <Heading as="h1" size="2xl">
-  Portfolio
+        Portfolio
       </Heading>
       <Flex direction="row">
         <Box height="60vh" width="100vh">
@@ -112,7 +112,7 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
           </Flex>
           <Button
             color="white"
-            backgroundColor="purple.400"
+            backgroundColor="blue.300"
             boxShadow="md"
             onClick={goToNewCrypto}
           >

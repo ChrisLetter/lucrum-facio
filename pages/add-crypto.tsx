@@ -79,7 +79,7 @@ const AddNewCrypto = () => {
       direction="column"
     >
       <Heading as="h1" size="xl" pb="10vh">
-        Insert a new position
+        Add a new position to your portfolio
       </Heading>
       <Flex
         align="center"
@@ -174,7 +174,7 @@ const AddNewCrypto = () => {
                 <Button
                   alignSelf="center"
                   color="white"
-                  backgroundColor="purple.300"
+                  backgroundColor="blue.300"
                   boxShadow="lg"
                   type="submit"
                   disabled={isSubmitting}

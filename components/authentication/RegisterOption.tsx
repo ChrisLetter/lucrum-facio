@@ -12,7 +12,7 @@ function RegisterOption() {
       </Text>
       <Button
           alignSelf="center"
-          backgroundColor="purple.400"
+          backgroundColor="blue.300"
           color="white"
           boxShadow="md"
         onClick={() => router.push('/register')}

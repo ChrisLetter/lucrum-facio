@@ -10,7 +10,7 @@ const Home = () => {
       justifyContent="space-evenly"
       height="100vh"
       bg="white"
-      color="purple.700"
+      color="blue.500"
       direction="column"
     >
       <Heading as="h1" size="4xl">

@@ -121,7 +121,7 @@ function Login() {
               </Text>
               <Button
                 alignSelf="center"
-                backgroundColor="purple.400"
+                backgroundColor="blue.300"
                 color="white"
                 boxShadow="md"
                 type="submit"

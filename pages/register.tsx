@@ -65,8 +65,6 @@ const Register = () => {
       align="center"
       justifyContent="center"
       height="100vh"
-      bg="white"
-      color="purple.700"
       direction="column"
     >
       <Text fontSize="3xl" mb="3vh">
@@ -151,7 +149,7 @@ const Register = () => {
               </Text>
               <Button
                 alignSelf="center"
-                backgroundColor="purple.400"
+                backgroundColor="blue.300"
                 color="white"
                 boxShadow="md"
                 type="submit"
