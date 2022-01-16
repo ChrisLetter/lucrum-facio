@@ -28,7 +28,6 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
         setUsdApyEstimate(usdApyEstimate);
         setTotalApy(totalApy);
         setPieChartStats(dataPieChart);
-        console.log(dataPieChart);
       };
       aggregate();
     }
