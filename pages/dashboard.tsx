@@ -15,6 +15,9 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
   function goToNewCrypto() {
     router.push('/add-crypto');
   }
+  function editPortfolio() {
+    router.push('/portfolio');
+  }
 
   useEffect(() => {
     if (holdings.length) {
@@ -110,14 +113,25 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
               {usdApyEstimate} $/year
             </Heading>
           </Flex>
-          <Button
-            color="white"
-            backgroundColor="blue.300"
-            boxShadow="md"
-            onClick={goToNewCrypto}
-          >
-            Add New Crypto
-          </Button>
+          <Flex>
+            <Button
+              color="white"
+              backgroundColor="blue.300"
+              boxShadow="md"
+              onClick={goToNewCrypto}
+              mr="1vw"
+            >
+              Add Position
+            </Button>
+            <Button
+              color="white"
+              backgroundColor="blue.300"
+              boxShadow="md"
+              onClick={editPortfolio}
+            >
+              Manage Portfolio
+            </Button>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
