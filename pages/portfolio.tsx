@@ -1,5 +1,7 @@
 import React from 'react';
 import { Flex, Box, Button, Text, Heading } from '@chakra-ui/react';
+import Holding from '../components/Holding';
+import { uuid } from 'uuidv4';
 
 import { connect } from 'react-redux';
 import { IUserInfo } from './../interfaces/interfaces';
@@ -7,15 +9,9 @@ import { IUserInfo } from './../interfaces/interfaces';
 function Portfolio({ username, holdings }: IUserInfo) {
   return (
     <Flex direction="column">
-      {console.log(holdings)}
-      <Heading>Portfolio</Heading>
+      <Heading>All your holdings</Heading>ß
       {holdings.map((holding) => (
-        <Flex key={holding.quantity + holding.apy + holding.location}>
-          {holding.cryptoId}
-          {holding.quantity}
-          {holding.apy}
-          {holding.location}
-        </Flex>
+        <Holding key={uuid()} holdings={holding} />
       ))}
     </Flex>
   );

@@ -44,6 +44,7 @@ export interface IHolding {
   location: string;
   quantity: number;
   apy: number;
+  cryptoId?: string;
 }
 
 export interface IHoldingFromDb {
