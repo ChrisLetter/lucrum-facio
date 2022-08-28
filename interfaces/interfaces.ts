@@ -37,6 +37,11 @@ export interface ILoginInput {
 export interface IUserInfo {
   username: string;
   holdings: IHolding[];
+  userId: number;
+}
+
+export interface IHoldingsProp {
+  holdings: IHolding[];
 }
 
 export interface IHolding {
@@ -80,4 +85,25 @@ export interface IAddCryptoInput {
     quantity: string;
     apy: string;
   };
+}
+
+export interface IPieChartData {
+  id: string;
+  label: string;
+  value: number;
+}
+
+export interface IPieChartDataProps {
+  data: IPieChartData[];
+}
+
+export interface IAggregateHoldingsResult {
+  usdNetWorth: string;
+  usdApyEstimate: string;
+  totalApy: string;
+  dataPieChart: IPieChartData[];
+}
+
+export interface IHoldingsGroupedByCrypto {
+  [key: string]: IHolding[];
 }

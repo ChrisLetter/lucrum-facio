@@ -1,6 +1,5 @@
 import { IHoldingFromDb } from './../interfaces/interfaces';
 export const helperFunctions: { [key: string]: any } = {};
-import { colors } from './colors';
 
 helperFunctions.aggregate = async function (holdings: IHoldingFromDb[]) {
   const sumHoldings = sumAllHoldings(holdings);
@@ -12,15 +11,6 @@ helperFunctions.aggregate = async function (holdings: IHoldingFromDb[]) {
   const totalApy = calculateTotalApy(usdNetWorth, usdApyEstimate);
   const usdSingularCrypto = calculateSingleUsdValue(sumHoldings, prices);
   const dataPieChart = produceDataForPieChart(usdSingularCrypto);
-  // console.log(usdNetWorth);
-  // console.log(usdApyEstimate);
-  // console.log(totalApy);
-  // console.log({ sumApy });
-  // console.log({ prices });
-  // console.log({ sumHoldings });
-  // console.log({ holdings });
-  // console.log({ usdSingularCrypto });
-
   return { usdNetWorth, usdApyEstimate, totalApy, dataPieChart };
 };
 
@@ -43,10 +33,22 @@ function whichCoinsPriceToQuery(totalHoldings: { [key: string]: number }) {
 }
 
 async function retrievePrices(coins: string) {
+  const coinsArray = coins.split(',');
   const prices: { [key: string]: any } = {};
   const time = await localStorage.getItem('time');
   const now = new Date().getTime().toString();
-  if (time === null || Number(now) - Number(time) > 300000) {
+  const cachedPrices = await localStorage.getItem('prices');
+  const coinsCached = cachedPrices ? Object.keys(JSON.parse(cachedPrices)) : [];
+
+  const isCoinPriceMissing: boolean = coinsArray.some(
+    (el) => !coinsCached.includes(el),
+  );
+
+  if (
+    time === null ||
+    Number(now) - Number(time) > 300000 ||
+    isCoinPriceMissing
+  ) {
     const res = await fetch(
       `https://api.coingecko.com/api/v3/simple/price?ids=${coins}&vs_currencies=usd`,
     );
@@ -58,7 +60,6 @@ async function retrievePrices(coins: string) {
     localStorage.setItem('time', now);
     return prices;
   } else {
-    const cachedPrices = await localStorage.getItem('prices');
     if (cachedPrices) return JSON.parse(cachedPrices);
   }
 }

@@ -17,6 +17,14 @@ export const resolvers = {
       const cryptos = await prisma.crypto.findMany();
       return cryptos;
     },
+    getUserHoldings: async (_: any, userId: any) => {
+      const userHoldings = await prisma.holding.findMany({
+        where: {
+          userId: userId.userId,
+        },
+      });
+      return userHoldings;
+    },
   },
   Mutation: {
     async register(_: any, { registrationInput }: IRegisterInput) {
@@ -57,7 +65,7 @@ export const resolvers = {
             userId: Number(userInfo.id),
           },
         });
-        return { token, username, holdings: portfolio };
+        return { token, username, holdings: portfolio, userId: userInfo.id };
       } else {
         throw new AuthenticationError('wrong email or password');
       }
@@ -78,7 +86,15 @@ export const resolvers = {
           cryptoId: cryptoId[0].idCoinGecko,
         },
       });
-      return { response: 'Added correctly to your portfolio' };
+      const portfolio = await prisma.holding.findMany({
+        where: {
+          userId: Number(context.user.id),
+        },
+      });
+      return {
+        response: 'Added correctly to your portfolio',
+        holdings: portfolio,
+      };
     },
   },
 };

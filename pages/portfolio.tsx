@@ -1,46 +1,39 @@
 import React from 'react';
-import { Flex, Box, Button, Text, Heading } from '@chakra-ui/react';
-import { uuid } from 'uuidv4';
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Flex, Box, Button, Text, Heading, Icon } from '@chakra-ui/react';
+import { v4 } from 'uuid';
 
 import { connect } from 'react-redux';
-import { IUserInfo } from './../interfaces/interfaces';
+import {
+  IHoldingsProp,
+  IUserInfo,
+  IHoldingsGroupedByCrypto,
+} from '../interfaces/interfaces';
+import HoldingsGroupedByCrypto from '../components/HoldingsGroupedByCrypto';
 
-function Portfolio({ username, holdings }: IUserInfo) {
+function Portfolio({ holdings }: IHoldingsProp) {
+  const holdingsGroupedByCrypto: IHoldingsGroupedByCrypto = {};
+  holdings.forEach((holding) => {
+    if (holding.cryptoId) {
+      const { cryptoId } = holding;
+      if (holdingsGroupedByCrypto[cryptoId]) {
+        holdingsGroupedByCrypto[cryptoId].push(holding);
+      } else {
+        holdingsGroupedByCrypto[cryptoId] = [holding];
+      }
+    }
+  });
+  const cryptoAvailable = Object.keys(holdingsGroupedByCrypto);
   return (
     <Flex direction="column" width="100vw" align="center">
-      {console.log(holdings)}
-      <Heading py={6}>All your holdings</Heading>
-      {holdings.map((holding) => (
-        <Box
-          key={uuid()}
-          width="60vh"
-          boxShadow="md"
-          rounded="md"
-          align="center"
-          p={3}
-          m={2}
-          backgroundColor="blue.100"
-        >
-          <Flex direction="row" justifyContent="space-between">
-            <Flex direction="column" pl={10}>
-              <Heading as="h2" size="md">
-                {holding.quantity +
-                  ' ' +
-                  holding.cryptoId +
-                  ' - ' +
-                  holding.location}
-              </Heading>
-              <Heading as="h2" size="md">
-                {holding.apy} %
-              </Heading>
-            </Flex>
-            <Flex direction="column">
-              <DeleteIcon />
-              <EditIcon />
-            </Flex>
-          </Flex>
-        </Box>
+      <Heading py={10}>All your holdings</Heading>
+      {cryptoAvailable.map((crypto) => (
+        <>
+          <Text key={v4()}>{crypto}</Text>
+          <HoldingsGroupedByCrypto
+            key={v4()}
+            holdings={holdingsGroupedByCrypto[crypto]}
+          ></HoldingsGroupedByCrypto>
+        </>
       ))}
     </Flex>
   );
@@ -50,6 +43,7 @@ const mapStateToProps = (state: IUserInfo) => {
   return {
     username: state.username,
     holdings: state.holdings,
+    userId: state.userId,
   };
 };
 

@@ -7,6 +7,7 @@ import reducers from '../redux/reducers';
 const initialState = {
   username: '',
   holdings: [],
+  userId: 0,
 };
 let store = createStore(reducers, initialState);
 import { MockedProvider } from '@apollo/react-testing';

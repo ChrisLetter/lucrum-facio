@@ -8,10 +8,11 @@ import reducers from '../redux/reducers';
 const initialState = {
   username: '',
   holdings: [],
+  userId: 0,
 };
 let store = createStore(reducers, initialState);
 import { MockedProvider } from '@apollo/react-testing';
-import { LOGIN_USER } from '../graphql/apolloClient/mutations';
+import { LOGIN_USER } from '../graphql/apollo-client/mutations';
 
 const mocks = [
   {

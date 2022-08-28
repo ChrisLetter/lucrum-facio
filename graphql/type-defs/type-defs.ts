@@ -30,6 +30,7 @@ export const typeDefs = gql`
     token: String!
     username: String!
     holdings: [holding]
+    userId: Int!
   }
   type newUser {
     token: String!
@@ -37,9 +38,11 @@ export const typeDefs = gql`
   }
   type Query {
     getCoins: [crypto]
+    getUserHoldings(userId: Int): [holding]
   }
   type addNewCryptoResponse {
     response: String!
+    holdings: [holding]
   }
   input loginUserInput {
     email: String!

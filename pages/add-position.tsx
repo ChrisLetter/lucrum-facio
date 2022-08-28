@@ -1,7 +1,7 @@
 import { Flex, Input, Button, Text, Heading } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
-import { GET_COINS, ADD_CRYPTO } from '../graphql/apolloClient/mutations';
+import { GET_COINS, ADD_CRYPTO } from '../graphql/apollo-client/mutations';
 import { useQuery, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
@@ -10,12 +10,14 @@ import {
   IAddCryptoFormInput,
 } from '../interfaces/interfaces';
 import { useState } from 'react';
-import { Field, Form, Formik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { Formik } from 'formik';
 
 // TODO: remove any
 
-const AddNewCrypto = () => {
+const AddNewPosition = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const token =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
   const userInfos = useSelector((state) => {
@@ -40,7 +42,10 @@ const AddNewCrypto = () => {
   const [mutateFunction, { data, loading, error }] = useMutation(ADD_CRYPTO, {
     onCompleted({ addCrypto }) {
       if (addCrypto) {
-        console.log(addCrypto.response);
+        dispatch({
+          type: 'UPDATE_HOLDINGS',
+          payload: addCrypto.holdings,
+        });
       }
     },
     onError(err: any) {
@@ -136,8 +141,7 @@ const AddNewCrypto = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.stakingProvider}
-                boxShadow="md"
-
+                  boxShadow="md"
                 />
                 {errors.stakingProvider &&
                   touched.stakingProvider &&
@@ -152,8 +156,7 @@ const AddNewCrypto = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.quantity}
-                boxShadow="md"
-
+                  boxShadow="md"
                 />
                 {errors.quantity && touched.quantity && errors.quantity}
                 <Input
@@ -167,8 +170,7 @@ const AddNewCrypto = () => {
                   onBlur={handleBlur}
                   value={values.apy}
                   border="2px solid #000"
-                boxShadow="md"
-
+                  boxShadow="md"
                 />
                 <Text mb="2vh">{errors.apy && touched.apy && errors.apy}</Text>
                 <Button
@@ -190,4 +192,4 @@ const AddNewCrypto = () => {
   );
 };
 
-export default AddNewCrypto;
+export default AddNewPosition;

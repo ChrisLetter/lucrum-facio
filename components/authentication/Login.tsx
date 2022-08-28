@@ -15,7 +15,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from './../../graphql/apolloClient/mutations';
+import { LOGIN_USER } from '../../graphql/apollo-client/mutations';
 
 function Login() {
   const router = useRouter();
@@ -25,18 +25,20 @@ function Login() {
     onCompleted({ login }) {
       if (login) {
         localStorage.setItem('accessToken', login.token);
-        const username = login.username;
-        const holdings = login.holdings;
+        const { username, holdings, userId } = login;
+
         const userInfo = {
           username,
           holdings,
+          userId,
         };
-        // I set the holdings to an empty array since this is a new user
         dispatch({
           type: 'AUTHENTICATE_USER',
           payload: { ...userInfo },
         });
-        router.push('/dashboard');
+        holdings.length
+          ? router.push('/dashboard')
+          : router.push('/no-records');
       }
     },
     onError(err: any) {

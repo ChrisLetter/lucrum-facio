@@ -2,75 +2,48 @@ import { Flex, Box, Button, Text, Heading } from '@chakra-ui/react';
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { helperFunctions } from './../utils/helperFunction';
-import { IUserInfo } from './../interfaces/interfaces';
-import { ResponsivePie } from '@nivo/pie';
+import { helperFunctions } from '../util/helper-function';
+import {
+  IHoldingsProp,
+  IUserInfo,
+  IAggregateHoldingsResult,
+} from '../interfaces/interfaces';
+import PieChart from '../components/PieChart';
 
-const DashBoard = ({ username, holdings }: IUserInfo) => {
+const DashBoard = ({ holdings }: IHoldingsProp) => {
   const router = useRouter();
   const [netWorth, setNetWorth] = useState('');
   const [usdApyEstimate, setUsdApyEstimate] = useState('');
   const [totalApy, setTotalApy] = useState('');
-  const [pieChartStats, setPieChartStats] = useState([]);
-  function goToNewCrypto() {
-    router.push('/add-crypto');
+  const [pieChartStats, setPieChartStats] = useState([
+    { id: '', label: '', value: 0 },
+  ]);
+  function openAddPositionPage() {
+    router.push('/add-position');
   }
-  function editPortfolio() {
+  function openPortfolio() {
     router.push('/portfolio');
+  }
+  function openNoRecords() {
+    router.push('/no-records');
   }
 
   useEffect(() => {
     if (holdings.length) {
-      const aggregate = async function () {
-        const { usdNetWorth, usdApyEstimate, totalApy, dataPieChart } =
-          await helperFunctions.aggregate(holdings);
-        setNetWorth(usdNetWorth);
-        setUsdApyEstimate(usdApyEstimate);
-        setTotalApy(totalApy);
-        setPieChartStats(dataPieChart);
-      };
-      aggregate();
+      helperFunctions
+        .aggregate(holdings)
+        .then((results: IAggregateHoldingsResult) => {
+          const { usdNetWorth, usdApyEstimate, totalApy, dataPieChart } =
+            results;
+          setNetWorth(usdNetWorth);
+          setUsdApyEstimate(usdApyEstimate);
+          setTotalApy(totalApy);
+          setPieChartStats(dataPieChart);
+        });
+    } else {
+      openNoRecords();
     }
   }, [holdings]);
-
-  const Pie = () => {
-    return (
-      <ResponsivePie
-        data={pieChartStats}
-        margin={{ top: 40, right: 80, bottom: 60, left: 80 }}
-        innerRadius={0.4}
-        padAngle={1}
-        cornerRadius={3}
-        colors={{ scheme: 'nivo' }}
-        activeOuterRadiusOffset={8}
-        borderWidth={1}
-        borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
-        arcLinkLabelsSkipAngle={10}
-        arcLinkLabelsTextColor="#000"
-        arcLinkLabelsThickness={2}
-        arcLinkLabelsColor={{ from: 'color' }}
-        arcLabelsSkipAngle={10}
-        arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
-        legends={[
-          {
-            anchor: 'right',
-            direction: 'column',
-            justify: false,
-            translateX: 0,
-            translateY: 0,
-            itemsSpacing: 10,
-            itemWidth: 100,
-            itemHeight: 18,
-            itemTextColor: '#000',
-            itemDirection: 'left-to-right',
-            itemOpacity: 1,
-            symbolSize: 18,
-            symbolShape: 'circle',
-          },
-        ]}
-      />
-    );
-  };
 
   return (
     <Flex
@@ -86,7 +59,7 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
       </Heading>
       <Flex direction="row">
         <Box height="60vh" width="100vh">
-          <Pie />
+          <PieChart data={pieChartStats} />
         </Box>
         <Flex
           width="50vw"
@@ -117,7 +90,7 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
               color="white"
               backgroundColor="blue.300"
               boxShadow="md"
-              onClick={goToNewCrypto}
+              onClick={openAddPositionPage}
               mr="1vw"
             >
               Add Position
@@ -126,7 +99,7 @@ const DashBoard = ({ username, holdings }: IUserInfo) => {
               color="white"
               backgroundColor="blue.300"
               boxShadow="md"
-              onClick={editPortfolio}
+              onClick={openPortfolio}
             >
               Manage Portfolio
             </Button>
@@ -141,6 +114,7 @@ const mapStateToProps = (state: IUserInfo) => {
   return {
     username: state.username,
     holdings: state.holdings,
+    userId: state.userId,
   };
 };
 

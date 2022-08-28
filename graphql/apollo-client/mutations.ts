@@ -14,6 +14,7 @@ export const LOGIN_USER = gql`
     login(loginInput: $loginInput) {
       token
       username
+      userId
       holdings {
         location
         quantity
@@ -28,6 +29,12 @@ export const ADD_CRYPTO = gql`
   mutation ($addCryptoInput: addCryptoUserInput) {
     addCrypto(addCryptoInput: $addCryptoInput) {
       response
+      holdings {
+        location
+        quantity
+        apy
+        cryptoId
+      }
     }
   }
 `;
@@ -39,6 +46,17 @@ export const GET_COINS = gql`
       name
       symbol
       image
+    }
+  }
+`;
+
+export const GET_USER_HOLDINGS = gql`
+  query ($userId: Int) {
+    getUserHoldings(userId: $userId) {
+      location
+      quantity
+      apy
+      cryptoId
     }
   }
 `;
