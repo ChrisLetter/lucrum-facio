@@ -40,7 +40,7 @@ export const typeDefs = gql`
     getCoins: [crypto]
     getUserHoldings(userId: Int): [holding]
   }
-  type addNewCryptoResponse {
+  type mutationResponse {
     response: String!
     holdings: [holding]
   }
@@ -51,7 +51,9 @@ export const typeDefs = gql`
   type Mutation {
     register(registrationInput: registerUserInput): newUser
     login(loginInput: loginUserInput): loggedUser
-    addCrypto(addCryptoInput: addCryptoUserInput): addNewCryptoResponse!
+    addCrypto(addCryptoInput: addCryptoUserInput): mutationResponse!
+    deletePosition(positionId: Int): mutationResponse!
+    editPosition(editPositionInput: editPositionUserInput): mutationResponse!
   }
   input registerUserInput {
     username: String!
@@ -60,6 +62,12 @@ export const typeDefs = gql`
   }
   input addCryptoUserInput {
     crypto: String!
+    stakingProvider: String!
+    quantity: String!
+    apy: String!
+  }
+  input editPositionUserInput {
+    id: Int!
     stakingProvider: String!
     quantity: String!
     apy: String!

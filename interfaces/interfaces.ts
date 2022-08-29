@@ -44,12 +44,17 @@ export interface IHoldingsProp {
   holdings: IHolding[];
 }
 
+export interface IHoldingProp {
+  holding: IHolding;
+}
+
 export interface IHolding {
   name: string;
   location: string;
   quantity: number;
   apy: number;
   cryptoId?: string;
+  id: number;
 }
 
 export interface IHoldingFromDb {
@@ -81,6 +86,15 @@ export interface IAddCryptoFormInput {
 export interface IAddCryptoInput {
   addCryptoInput: {
     crypto: string;
+    stakingProvider: string;
+    quantity: string;
+    apy: string;
+  };
+}
+
+export interface IEditPositionInput {
+  editPositionInput: {
+    id: number;
     stakingProvider: string;
     quantity: string;
     apy: string;

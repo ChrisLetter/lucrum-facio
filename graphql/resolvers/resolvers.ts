@@ -7,6 +7,7 @@ import {
   IRegisterInput,
   ILoginInput,
   IAddCryptoInput,
+  IEditPositionInput,
 } from './../../interfaces/interfaces';
 
 // TODO: authenticate routes when finished
@@ -95,6 +96,60 @@ export const resolvers = {
         response: 'Added correctly to your portfolio',
         holdings: portfolio,
       };
+    },
+
+    async editPosition(
+      _: any,
+      { editPositionInput }: IEditPositionInput,
+      context: any,
+    ) {
+      const { id, quantity, apy, stakingProvider } = editPositionInput;
+      const updatePosition = await prisma.holding.update({
+        where: {
+          id,
+        },
+        data: {
+          location: stakingProvider,
+          quantity: Number(quantity),
+          apy: Number(apy),
+        },
+      });
+      const { userId } = updatePosition;
+      const portfolio = await prisma.holding.findMany({
+        where: {
+          userId: Number(userId),
+        },
+      });
+      return {
+        response: 'successfully updated',
+        holdings: portfolio,
+      };
+    },
+
+    async deletePosition(_: any, id: any) {
+      const { positionId } = id;
+      try {
+        const deletedPosition = await prisma.holding.delete({
+          where: {
+            id: positionId,
+          },
+        });
+        const { userId } = deletedPosition;
+        const portfolio = await prisma.holding.findMany({
+          where: {
+            userId: Number(userId),
+          },
+        });
+        return {
+          response: 'position correctly deleted',
+          holdings: portfolio,
+        };
+      } catch (error) {
+        console.error(error);
+        return {
+          response: 'error',
+        };
+      }
     },
   },
 };

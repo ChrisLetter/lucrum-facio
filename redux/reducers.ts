@@ -22,7 +22,7 @@ const reducer = (
     case 'UPDATE_HOLDINGS':
       return {
         ...state,
-        holdings: action.payload,
+        holdings: action.payload.holdings,
       };
     default:
       return state;

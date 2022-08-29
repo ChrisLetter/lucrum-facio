@@ -20,6 +20,7 @@ export const LOGIN_USER = gql`
         quantity
         apy
         cryptoId
+        id
       }
     }
   }
@@ -57,6 +58,36 @@ export const GET_USER_HOLDINGS = gql`
       quantity
       apy
       cryptoId
+    }
+  }
+`;
+
+export const DELETE_POSITION = gql`
+  mutation ($positionId: Int) {
+    deletePosition(positionId: $positionId) {
+      response
+      holdings {
+        location
+        quantity
+        apy
+        cryptoId
+        id
+      }
+    }
+  }
+`;
+
+export const UPDATE_POSITION = gql`
+  mutation ($editPositionInput: editPositionUserInput) {
+    editPosition(editPositionInput: $editPositionInput) {
+      response
+      holdings {
+        location
+        quantity
+        apy
+        cryptoId
+        id
+      }
     }
   }
 `;

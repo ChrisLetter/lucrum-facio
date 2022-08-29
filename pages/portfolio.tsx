@@ -25,15 +25,18 @@ function Portfolio({ holdings }: IHoldingsProp) {
   const cryptoAvailable = Object.keys(holdingsGroupedByCrypto);
   return (
     <Flex direction="column" width="100vw" align="center">
-      <Heading py={10}>All your holdings</Heading>
+      <Heading pt={10} mb={4}>
+        All your holdings
+      </Heading>
       {cryptoAvailable.map((crypto) => (
-        <>
-          <Text key={v4()}>{crypto}</Text>
+        <Flex direction="column" key={v4()} alignItems="center">
+          <Text fontSize="2xl" mt={4} mb={2}>
+            {crypto}
+          </Text>
           <HoldingsGroupedByCrypto
-            key={v4()}
             holdings={holdingsGroupedByCrypto[crypto]}
           ></HoldingsGroupedByCrypto>
-        </>
+        </Flex>
       ))}
     </Flex>
   );

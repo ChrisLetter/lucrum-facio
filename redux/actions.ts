@@ -7,5 +7,5 @@ export type createNewUserAction = {
 
 export type updateHoldings = {
   type: 'UPDATE_HOLDINGS';
-  payload: IHolding[];
+  payload: { holdings: IHolding[] };
 };

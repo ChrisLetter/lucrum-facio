@@ -1,17 +1,10 @@
-import {
-  Flex,
-  Input,
-  Button,
-  Text,
-  InputGroup,
-  InputRightElement,
-} from '@chakra-ui/react';
+import { Flex, Input, Button, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { Field, Form, Formik } from 'formik';
+import { Formik } from 'formik';
 import {
   ILoginFormErrors,
   ILoginFormValues,
-} from './../../interfaces/interfaces';
+} from '../../interfaces/interfaces';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useMutation } from '@apollo/client';
@@ -42,6 +35,7 @@ function Login() {
       }
     },
     onError(err: any) {
+      console.log(err);
       setErrors('Invalid email or password, please try again');
     },
   });
