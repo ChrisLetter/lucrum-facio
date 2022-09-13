@@ -7,25 +7,21 @@ function PieChart({ data }: IPieChartDataProps) {
     <ResponsivePie
       data={data}
       margin={{ top: 40, right: 80, bottom: 60, left: 80 }}
-      innerRadius={0.4}
-      padAngle={1}
+      innerRadius={0.3}
       cornerRadius={3}
       colors={{ scheme: 'nivo' }}
       activeOuterRadiusOffset={8}
       borderWidth={1}
       borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+      arcLabel={(d) => `${d.value} $`}
       arcLinkLabelsSkipAngle={10}
-      arcLinkLabelsTextColor="#000"
-      arcLinkLabelsThickness={2}
-      arcLinkLabelsColor={{ from: 'color' }}
       arcLabelsSkipAngle={10}
-      arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
       legends={[
         {
           anchor: 'right',
           direction: 'column',
           justify: false,
-          translateX: 0,
+          translateX: 70,
           translateY: 0,
           itemsSpacing: 10,
           itemWidth: 100,

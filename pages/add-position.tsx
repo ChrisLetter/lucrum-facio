@@ -1,6 +1,5 @@
-import { Flex, Input, Button, Text, Heading } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
-import Select from 'react-select';
+import { Flex, Input, Button, Text, Heading, Select } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 import { GET_COINS, ADD_CRYPTO } from '../graphql/apollo-client/mutations';
 import { useQuery, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
@@ -20,21 +19,19 @@ const AddNewPosition = () => {
   const dispatch = useDispatch();
   const token =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
-  const userInfos = useSelector((state) => {
-    return state;
-  });
   const [selection, setSelection] = useState();
-  const options: any = [];
   const [errors, setErrors] = useState('');
 
   useQuery(GET_COINS, {
     onCompleted({ getCoins }) {
+      const cryptoSelect = document.querySelector('#crypto-select');
+      // workaround needed because the select component doesn't work with async data
       getCoins.forEach((coin: ICryptoInfo) => {
-        const option = {
-          value: coin.name,
-          label: coin.name,
-        };
-        options.push(option);
+        const option = coin.name;
+        const optionEl: HTMLElement = document.createElement('option');
+        optionEl.setAttribute('value', option);
+        optionEl.innerHTML = option;
+        cryptoSelect && cryptoSelect.appendChild(optionEl);
       });
     },
   });
@@ -59,11 +56,10 @@ const AddNewPosition = () => {
 
   async function submit(values: IAddCryptoFormInput) {
     if (selection) {
-      const { value } = selection;
       await mutateFunction({
         variables: {
           addCryptoInput: {
-            crypto: value,
+            crypto: selection,
             stakingProvider: values.stakingProvider,
             quantity: values.quantity,
             apy: values.apy,
@@ -83,6 +79,15 @@ const AddNewPosition = () => {
       color="black"
       direction="column"
     >
+      <ArrowBackIcon
+        w={8}
+        h={8}
+        pos="absolute"
+        top="5"
+        left="5"
+        sx={{ cursor: 'pointer' }}
+        onClick={() => router.push('/dashboard')}
+      />
       <Heading as="h1" size="xl" pb="10vh">
         Add a new position to your portfolio
       </Heading>
@@ -95,11 +100,13 @@ const AddNewPosition = () => {
         direction="column"
       >
         <Select
-          value={selection}
+          backgroundColor="white"
+          color="black"
+          boxShadow="md"
+          id="crypto-select"
+          placeholder="Select an option from the dropdown"
           onChange={(event) => handleSelection(event)}
-          options={options}
-          placeholder={'Select crypto from the menu'}
-        />
+        ></Select>
         <Formik
           initialValues={{ stakingProvider: '', quantity: '', apy: '' }}
           validate={(values) => {

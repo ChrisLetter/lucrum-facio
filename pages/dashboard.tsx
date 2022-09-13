@@ -1,6 +1,6 @@
-import { Flex, Box, Button, Text, Heading } from '@chakra-ui/react';
+import { Flex, Box, Button, Text, Heading, Icon } from '@chakra-ui/react';
 import { connect } from 'react-redux';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { helperFunctions } from '../util/helper-function';
 import {
@@ -9,6 +9,7 @@ import {
   IAggregateHoldingsResult,
 } from '../interfaces/interfaces';
 import PieChart from '../components/PieChart';
+import { FiLogOut } from 'react-icons/fi';
 
 const DashBoard = ({ holdings }: IHoldingsProp) => {
   const router = useRouter();
@@ -28,8 +29,12 @@ const DashBoard = ({ holdings }: IHoldingsProp) => {
     router.push('/no-records');
   }
 
+  function logout() {
+    router.push('/');
+  }
+
   useEffect(() => {
-    if (holdings.length) {
+    if (holdings?.length) {
       helperFunctions
         .aggregate(holdings)
         .then((results: IAggregateHoldingsResult) => {
@@ -49,7 +54,7 @@ const DashBoard = ({ holdings }: IHoldingsProp) => {
     <Flex
       align="center"
       justifyContent="space-evenly"
-      height="100vh"
+      height="95vh"
       bg="white"
       color="black"
       direction="column"
@@ -58,7 +63,7 @@ const DashBoard = ({ holdings }: IHoldingsProp) => {
         Portfolio
       </Heading>
       <Flex direction="row">
-        <Box height="60vh" width="100vh">
+        <Box height="60vh" width="50vw">
           <PieChart data={pieChartStats} />
         </Box>
         <Flex
@@ -106,6 +111,16 @@ const DashBoard = ({ holdings }: IHoldingsProp) => {
           </Flex>
         </Flex>
       </Flex>
+      <Icon
+        as={FiLogOut}
+        w={8}
+        h={8}
+        pos="absolute"
+        top="5"
+        right="5"
+        sx={{ cursor: 'pointer' }}
+        onClick={logout}
+      />
     </Flex>
   );
 };

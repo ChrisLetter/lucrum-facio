@@ -10,7 +10,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  ModalFooter,
   useDisclosure,
   Input,
 } from '@chakra-ui/react';
@@ -24,7 +23,6 @@ import {
   IHolding,
   IAddCryptoFormErrors,
   IAddCryptoFormInput,
-  ILoginFormValues,
 } from '../interfaces/interfaces';
 import { Formik } from 'formik';
 import { useMutation } from '@apollo/client';
@@ -38,10 +36,6 @@ function HoldingsGroupedByCrypto({ holdings }: IHoldingsProp) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
 
-  function openModal(holding: IHolding) {
-    setCurrentSelection(holding);
-    onOpen();
-  }
   const [currentSelection, setCurrentSelection] = useState<IHolding>({
     quantity: 0,
     name: '',
@@ -52,42 +46,26 @@ function HoldingsGroupedByCrypto({ holdings }: IHoldingsProp) {
   });
   const finalRef = React.useRef(null);
 
-  const [updatePositionMutation, { data, loading, error }] = useMutation(
-    UPDATE_POSITION,
-    {
-      onCompleted({ editPosition }) {
-        if ('holdings' in editPosition) {
-          dispatch({
-            type: 'UPDATE_HOLDINGS',
-            payload: { holdings: editPosition.holdings },
-          });
-        }
-      },
-      onError(err: any) {
-        console.log(err);
-      },
+  const [updatePositionMutation] = useMutation(UPDATE_POSITION, {
+    onCompleted({ editPosition }) {
+      if ('holdings' in editPosition) {
+        dispatch({
+          type: 'UPDATE_HOLDINGS',
+          payload: editPosition.holdings,
+        });
+      }
     },
-  );
-
-  async function submit(values: IAddCryptoFormInput) {
-    await updatePositionMutation({
-      variables: {
-        editPositionInput: {
-          id: currentSelection.id,
-          stakingProvider: values.stakingProvider,
-          quantity: values.quantity,
-          apy: values.apy,
-        },
-      },
-    });
-  }
+    onError(err: any) {
+      console.log(err);
+    },
+  });
 
   const [deletePositionMutation] = useMutation(DELETE_POSITION, {
     onCompleted({ deletePosition }) {
       if ('holdings' in deletePosition) {
         dispatch({
           type: 'UPDATE_HOLDINGS',
-          payload: { holdings: deletePosition.holdings },
+          payload: deletePosition.holdings,
         });
       }
     },
@@ -100,6 +78,24 @@ function HoldingsGroupedByCrypto({ holdings }: IHoldingsProp) {
     await deletePositionMutation({
       variables: {
         positionId: currentSelection.id,
+      },
+    });
+  }
+
+  function openModal(holding: IHolding) {
+    setCurrentSelection(holding);
+    onOpen();
+  }
+
+  async function submit(values: IAddCryptoFormInput) {
+    await updatePositionMutation({
+      variables: {
+        editPositionInput: {
+          id: currentSelection.id,
+          stakingProvider: values.stakingProvider,
+          quantity: values.quantity,
+          apy: values.apy,
+        },
       },
     });
   }
@@ -124,16 +120,34 @@ function HoldingsGroupedByCrypto({ holdings }: IHoldingsProp) {
               openModal(holding);
             }}
           >
-            <Flex color="white" justifyContent="space-between" direction="row">
-              <Flex ml={3} direction="row" alignItems="center">
+            <Flex color="white" direction="row">
+              <Flex
+                ml={3}
+                direction="row"
+                flex="1"
+                alignItems="center"
+                justifyContent="center"
+              >
                 <Icon as={BsCurrencyBitcoin} />
                 <Text pl={1}>{holding.quantity + ' ' + holding.cryptoId}</Text>
               </Flex>
-              <Flex ml={3} direction="row" alignItems="center">
+              <Flex
+                ml={3}
+                direction="row"
+                flex="1"
+                alignItems="center"
+                justifyContent="center"
+              >
                 <Icon as={AiFillBank} />
                 <Text pl={1}>{holding.location}</Text>
               </Flex>
-              <Flex ml={3} direction="row" alignItems="center">
+              <Flex
+                ml={3}
+                direction="row"
+                flex="1"
+                alignItems="center"
+                justifyContent="center"
+              >
                 <Icon as={FaArrowUp} />
                 <Text pl={1}>{holding.apy} %</Text>
               </Flex>

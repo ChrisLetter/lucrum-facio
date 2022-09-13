@@ -39,6 +39,7 @@
     "react-redux": "^7.2.6",
     "react-select": "^5.2.1",
     "redux": "^4.1.2",
+    "redux-persist": "^6.0.0",
     "uuid": "^8.3.2",
     "uuidv4": "^6.2.13"
   },
