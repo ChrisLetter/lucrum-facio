@@ -8,24 +8,14 @@ import {
   ILoginInput,
   IAddCryptoInput,
   IEditPositionInput,
-} from './../../interfaces/interfaces';
-
-// TODO: authenticate routes when finished
+} from '../../interfaces/interfaces';
 
 export const resolvers = {
   Query: {
-    getCoins: async (_: any, __: any, context: any) => {
-      const cryptos = await prisma.crypto.findMany();
-      return cryptos;
-    },
-    getUserHoldings: async (_: any, userId: any) => {
-      const userHoldings = await prisma.holding.findMany({
-        where: {
-          userId: userId.userId,
-        },
-      });
-      return userHoldings;
-    },
+    getCoins: authenticated(async (_: any, __: any) => {
+      const crypto = await prisma.crypto.findMany();
+      return crypto;
+    }),
   },
   Mutation: {
     async register(_: any, { registrationInput }: IRegisterInput) {
@@ -72,61 +62,61 @@ export const resolvers = {
       }
     },
 
-    async addCrypto(_: any, { addCryptoInput }: IAddCryptoInput, context: any) {
-      const cryptoId = await prisma.crypto.findMany({
-        where: {
-          name: addCryptoInput.crypto,
-        },
-      });
-      await prisma.holding.create({
-        data: {
-          location: addCryptoInput.stakingProvider,
-          quantity: Number(addCryptoInput.quantity),
-          apy: Number(addCryptoInput.apy),
-          userId: Number(context.user.id),
-          cryptoId: cryptoId[0].idCoinGecko,
-        },
-      });
-      const portfolio = await prisma.holding.findMany({
-        where: {
-          userId: Number(context.user.id),
-        },
-      });
-      return {
-        response: 'Added correctly to your portfolio',
-        holdings: portfolio,
-      };
-    },
+    addCrypto: authenticated(
+      async (_: any, { addCryptoInput }: IAddCryptoInput, context: any) => {
+        const cryptoId = await prisma.crypto.findMany({
+          where: {
+            name: addCryptoInput.crypto,
+          },
+        });
+        await prisma.holding.create({
+          data: {
+            location: addCryptoInput.stakingProvider,
+            quantity: Number(addCryptoInput.quantity),
+            apy: Number(addCryptoInput.apy),
+            userId: Number(context.user.id),
+            cryptoId: cryptoId[0].idCoinGecko,
+          },
+        });
+        const portfolio = await prisma.holding.findMany({
+          where: {
+            userId: Number(context.user.id),
+          },
+        });
+        return {
+          response: 'Added correctly to your portfolio',
+          holdings: portfolio,
+        };
+      },
+    ),
 
-    async editPosition(
-      _: any,
-      { editPositionInput }: IEditPositionInput,
-      context: any,
-    ) {
-      const { id, quantity, apy, stakingProvider } = editPositionInput;
-      const updatePosition = await prisma.holding.update({
-        where: {
-          id,
-        },
-        data: {
-          location: stakingProvider,
-          quantity: Number(quantity),
-          apy: Number(apy),
-        },
-      });
-      const { userId } = updatePosition;
-      const portfolio = await prisma.holding.findMany({
-        where: {
-          userId: Number(userId),
-        },
-      });
-      return {
-        response: 'successfully updated',
-        holdings: portfolio,
-      };
-    },
+    editPosition: authenticated(
+      async (_: any, { editPositionInput }: IEditPositionInput) => {
+        const { id, quantity, apy, stakingProvider } = editPositionInput;
+        const updatePosition = await prisma.holding.update({
+          where: {
+            id,
+          },
+          data: {
+            location: stakingProvider,
+            quantity: Number(quantity),
+            apy: Number(apy),
+          },
+        });
+        const { userId } = updatePosition;
+        const portfolio = await prisma.holding.findMany({
+          where: {
+            userId: Number(userId),
+          },
+        });
+        return {
+          response: 'successfully updated',
+          holdings: portfolio,
+        };
+      },
+    ),
 
-    async deletePosition(_: any, id: any) {
+    deletePosition: authenticated(async (_: any, id: any) => {
       const { positionId } = id;
       try {
         const deletedPosition = await prisma.holding.delete({
@@ -150,6 +140,6 @@ export const resolvers = {
           response: 'error',
         };
       }
-    },
+    }),
   },
 };

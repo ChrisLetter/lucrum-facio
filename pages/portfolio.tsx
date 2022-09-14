@@ -16,28 +16,24 @@ function Portfolio({ holdings }: IHoldingsProp) {
   const router = useRouter();
   const holdingsGroupedByCrypto: IHoldingsGroupedByCrypto = {};
 
-  holdings.forEach((holding: IHolding) => {
-    if (holding.cryptoId) {
-      const { cryptoId } = holding;
-      if (holdingsGroupedByCrypto[cryptoId]) {
-        holdingsGroupedByCrypto[cryptoId].push(holding);
-      } else {
-        holdingsGroupedByCrypto[cryptoId] = [holding];
+  holdings &&
+    holdings.forEach((holding: IHolding) => {
+      if (holding.cryptoId) {
+        const { cryptoId } = holding;
+        if (holdingsGroupedByCrypto[cryptoId]) {
+          holdingsGroupedByCrypto[cryptoId].push(holding);
+        } else {
+          holdingsGroupedByCrypto[cryptoId] = [holding];
+        }
       }
-    }
-  });
+    });
+
+  if (!holdings || !holdings.length) {
+    router.push('/no-records');
+  }
 
   return (
     <Flex direction="column" width="100vw" align="center">
-      <ArrowBackIcon
-        w={8}
-        h={8}
-        pos="absolute"
-        top="5"
-        left="5"
-        sx={{ cursor: 'pointer' }}
-        onClick={() => router.push('/dashboard')}
-      />
       <Heading pt={10} mb={4}>
         All your holdings
       </Heading>
@@ -51,6 +47,15 @@ function Portfolio({ holdings }: IHoldingsProp) {
           ></HoldingsGroupedByCrypto>
         </Flex>
       ))}
+      <ArrowBackIcon
+        w={8}
+        h={8}
+        pos="absolute"
+        top="5"
+        left="5"
+        sx={{ cursor: 'pointer' }}
+        onClick={() => router.push('/dashboard')}
+      />
     </Flex>
   );
 }

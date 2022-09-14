@@ -13,8 +13,9 @@ import { LOGIN_USER } from '../../graphql/apollo-client/mutations';
 function Login() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [errors, setErrors] = useState('');
-  const [mutateFunction, { data, loading, error }] = useMutation(LOGIN_USER, {
+  const [mutationError, setMutationError] = useState('');
+
+  const [mutateFunction] = useMutation(LOGIN_USER, {
     onCompleted({ login }) {
       if (login) {
         localStorage.setItem('accessToken', login.token);
@@ -34,9 +35,8 @@ function Login() {
           : router.push('/no-records');
       }
     },
-    onError(err: any) {
-      console.log(err);
-      setErrors('Invalid email or password, please try again');
+    onError(_err) {
+      setMutationError('Invalid email or password, please try again');
     },
   });
 
@@ -52,7 +52,7 @@ function Login() {
   }
 
   return (
-    <Flex direction="column" align="center">
+    <Flex direction="column" align="center" color="red.500">
       <Text color="black" fontSize="xl" mb="1vh">
         Enter your credentials
       </Text>
@@ -61,10 +61,13 @@ function Login() {
         validate={(values) => {
           const errors: ILoginFormErrors = {};
           if (!values.email) {
-            errors.email = 'Enter an email';
+            errors.email = 'Please enter an email';
+          }
+          if (values.email && !values.email.includes('@')) {
+            errors.email = 'Please enter a valid email';
           }
           if (!values.password) {
-            errors.password = 'Enter a password';
+            errors.password = 'Please enter a password';
           }
           return errors;
         }}
@@ -117,8 +120,7 @@ function Login() {
               </Text>
               <Button
                 alignSelf="center"
-                backgroundColor="blue.300"
-                color="white"
+                colorScheme="linkedin"
                 boxShadow="md"
                 type="submit"
                 disabled={isSubmitting}
@@ -129,7 +131,7 @@ function Login() {
           </form>
         )}
       </Formik>
-      {errors}
+      <Text mt="2vh">{mutationError}</Text>
     </Flex>
   );
 }

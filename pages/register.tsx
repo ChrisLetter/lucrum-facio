@@ -1,44 +1,44 @@
 import { Flex, Input, Button, Text } from '@chakra-ui/react';
 import { Formik } from 'formik';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 import {
   IRegisterFormValues,
   IRegisterFormErrors,
-} from './../interfaces/interfaces';
-import { useState } from 'react';
+} from '../interfaces/interfaces';
 import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from '../graphql/apollo-client/mutations';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
 const Register = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [mutateFunction, { data, loading, error }] = useMutation(
-    REGISTER_USER,
-    {
-      onCompleted({ register }) {
-        if (register) {
-          const username = register.username;
-          localStorage.setItem('accessToken', register.token);
-          const userInfo = {
-            username,
-            holdings: [],
-          };
-          dispatch({
-            type: 'AUTHENTICATE_USER',
-            payload: { ...userInfo },
-          });
-          router.push('/dashboard');
-        }
-      },
-      onError(err: any) {
-        console.log(err);
-      },
+  const [mutationError, setMutationError] = useState('');
+
+  const [registerUserMutation] = useMutation(REGISTER_USER, {
+    onCompleted({ register }) {
+      if (register) {
+        const username = register.username;
+        localStorage.setItem('accessToken', register.token);
+        const userInfo = {
+          username,
+          holdings: [],
+        };
+        dispatch({
+          type: 'AUTHENTICATE_USER',
+          payload: { ...userInfo },
+        });
+        router.push('/dashboard');
+      }
     },
-  );
+    onError(_err) {
+      setMutationError('Something went wrong, please try again');
+    },
+  });
 
   async function submit(values: IRegisterFormValues) {
-    await mutateFunction({
+    await registerUserMutation({
       variables: {
         registrationInput: {
           email: values.email,
@@ -64,17 +64,17 @@ const Register = () => {
         validate={(values) => {
           const errors: IRegisterFormErrors = {};
           if (!values.email) {
-            errors.email = 'Enter an email';
+            errors.email = 'Please enter an email';
           } else if (
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
           ) {
             errors.email = 'Invalid email address';
           }
           if (!values.password) {
-            errors.password = 'Enter a password';
+            errors.password = 'Please enter a password';
           }
           if (!values.username) {
-            errors.username = 'Enter an username';
+            errors.username = 'Please enter an username';
           }
           return errors;
         }}
@@ -93,7 +93,12 @@ const Register = () => {
           isSubmitting,
         }) => (
           <form onSubmit={handleSubmit}>
-            <Flex direction="column" width="30vw" align="center">
+            <Flex
+              direction="column"
+              width="30vw"
+              align="center"
+              color="red.500"
+            >
               <Input
                 mb="1vh"
                 backgroundColor="white"
@@ -138,8 +143,7 @@ const Register = () => {
               </Text>
               <Button
                 alignSelf="center"
-                backgroundColor="blue.300"
-                color="white"
+                colorScheme="linkedin"
                 boxShadow="md"
                 type="submit"
                 disabled={isSubmitting}
@@ -150,6 +154,16 @@ const Register = () => {
           </form>
         )}
       </Formik>
+      <Text mt="2vh">{mutationError}</Text>
+      <ArrowBackIcon
+        w={8}
+        h={8}
+        pos="absolute"
+        top="5"
+        left="5"
+        sx={{ cursor: 'pointer' }}
+        onClick={() => router.push('/')}
+      />
     </Flex>
   );
 };

@@ -35,6 +35,7 @@ import { useDispatch } from 'react-redux';
 function HoldingsGroupedByCrypto({ holdings }: IHoldingsProp) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
+  const [mutationError, setMutationError] = useState('');
 
   const [currentSelection, setCurrentSelection] = useState<IHolding>({
     quantity: 0,
@@ -55,8 +56,8 @@ function HoldingsGroupedByCrypto({ holdings }: IHoldingsProp) {
         });
       }
     },
-    onError(err: any) {
-      console.log(err);
+    onError(_err) {
+      setMutationError('Something went wrong, please try again');
     },
   });
 
@@ -69,12 +70,12 @@ function HoldingsGroupedByCrypto({ holdings }: IHoldingsProp) {
         });
       }
     },
-    onError(err: any) {
-      console.log(err);
+    onError(_err) {
+      setMutationError('Something went wrong, please try again');
     },
   });
 
-  async function deletePosition() {
+  async function removePosition() {
     await deletePositionMutation({
       variables: {
         positionId: currentSelection.id,
@@ -212,9 +213,11 @@ function HoldingsGroupedByCrypto({ holdings }: IHoldingsProp) {
                       value={values.stakingProvider}
                       boxShadow="md"
                     />
-                    {errors.stakingProvider &&
-                      touched.stakingProvider &&
-                      errors.stakingProvider}
+                    <Text color="red.500">
+                      {errors.stakingProvider &&
+                        touched.stakingProvider &&
+                        errors.stakingProvider}
+                    </Text>
                     <Text alignSelf="flex-start" pl={2} fontSize="xs">
                       Quantity
                     </Text>
@@ -229,7 +232,9 @@ function HoldingsGroupedByCrypto({ holdings }: IHoldingsProp) {
                       value={values.quantity}
                       boxShadow="md"
                     />
-                    {errors.quantity && touched.quantity && errors.quantity}
+                    <Text color="red.500">
+                      {errors.quantity && touched.quantity && errors.quantity}
+                    </Text>
                     <Text alignSelf="flex-start" pl={2} fontSize="xs">
                       APY
                     </Text>
@@ -245,8 +250,11 @@ function HoldingsGroupedByCrypto({ holdings }: IHoldingsProp) {
                       border="2px solid #000"
                       boxShadow="md"
                     />
-                    <Text mb="2vh">
+                    <Text color="red.500" mb="2vh">
                       {errors.apy && touched.apy && errors.apy}
+                    </Text>
+                    <Text color="red.500" mt="2vh">
+                      {mutationError}
                     </Text>
                     <Flex alignSelf="end" my={2}>
                       <Button
@@ -257,7 +265,7 @@ function HoldingsGroupedByCrypto({ holdings }: IHoldingsProp) {
                       >
                         Close
                       </Button>
-                      <Button colorScheme="red" onClick={deletePosition} mx={1}>
+                      <Button colorScheme="red" onClick={removePosition} mx={1}>
                         Delete
                       </Button>
                       <Button colorScheme="blue" type="submit">

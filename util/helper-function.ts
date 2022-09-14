@@ -1,21 +1,21 @@
-import { IHoldingFromDb } from './../interfaces/interfaces';
+import { IHoldingFromDb } from '../interfaces/interfaces';
 export const helperFunctions: { [key: string]: any } = {};
 
 helperFunctions.aggregate = async function (holdings: IHoldingFromDb[]) {
-  const sumHoldings = sumAllHoldings(holdings);
-  const sumApy = sumAllApy(holdings);
-  const whichCoins = whichCoinsPriceToQuery(sumHoldings);
-  const prices = await retrievePrices(whichCoins);
-  const usdNetWorth = calculateTotalUsdValue(sumHoldings, prices);
-  const usdApyEstimate = calculateTotalUsdValue(sumApy, prices);
+  const groupedHoldings = groupAllHoldings(holdings);
+  const groupedApy = groupApy(holdings);
+  const coins = coinsToQuery(groupedHoldings);
+  const prices = await retrievePrices(coins);
+  const usdNetWorth = calculateTotalUsdValue(groupedHoldings, prices);
+  const usdApyEstimate = calculateTotalUsdValue(groupedApy, prices);
   const totalApy = calculateTotalApy(usdNetWorth, usdApyEstimate);
-  const usdSingularCrypto = calculateSingleUsdValue(sumHoldings, prices);
+  const usdSingularCrypto = calculateSingleUsdValue(groupedHoldings, prices);
   const dataPieChart = produceDataForPieChart(usdSingularCrypto);
   return { usdNetWorth, usdApyEstimate, totalApy, dataPieChart };
 };
 
-function sumAllHoldings(holdings: IHoldingFromDb[]) {
-  const total: any = {};
+function groupAllHoldings(holdings: IHoldingFromDb[]) {
+  const total: { [key: string]: number } = {};
   for (let el of holdings) {
     !total[el.cryptoId]
       ? (total[el.cryptoId] = Number(el.quantity))
@@ -24,7 +24,7 @@ function sumAllHoldings(holdings: IHoldingFromDb[]) {
   return total;
 }
 
-function whichCoinsPriceToQuery(totalHoldings: { [key: string]: number }) {
+function coinsToQuery(totalHoldings: { [key: string]: number }) {
   const coins = [];
   for (let el in totalHoldings) {
     coins.push(el);
@@ -86,7 +86,7 @@ function calculateSingleUsdValue(
   return res;
 }
 
-function sumAllApy(holdings: IHoldingFromDb[]) {
+function groupApy(holdings: IHoldingFromDb[]) {
   const totalApy: any = {};
   for (let el of holdings) {
     !totalApy[el.cryptoId]

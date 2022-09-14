@@ -8,19 +8,15 @@ import {
   IAddCryptoFormErrors,
   IAddCryptoFormInput,
 } from '../interfaces/interfaces';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
-
-// TODO: remove any
 
 const AddNewPosition = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
   const [selection, setSelection] = useState();
-  const [errors, setErrors] = useState('');
+  const [mutationError, setMutationError] = useState('');
 
   useQuery(GET_COINS, {
     onCompleted({ getCoins }) {
@@ -36,7 +32,7 @@ const AddNewPosition = () => {
     },
   });
 
-  const [mutateFunction, { data, loading, error }] = useMutation(ADD_CRYPTO, {
+  const [addCryptoMutation] = useMutation(ADD_CRYPTO, {
     onCompleted({ addCrypto }) {
       if (addCrypto) {
         dispatch({
@@ -45,18 +41,14 @@ const AddNewPosition = () => {
         });
       }
     },
-    onError(err: any) {
-      console.log(err);
+    onError(_err) {
+      setMutationError('Something went wrong, please try again');
     },
   });
 
-  const handleSelection = (event: any): void => {
-    setSelection(event);
-  };
-
   async function submit(values: IAddCryptoFormInput) {
     if (selection) {
-      await mutateFunction({
+      await addCryptoMutation({
         variables: {
           addCryptoInput: {
             crypto: selection,
@@ -70,24 +62,17 @@ const AddNewPosition = () => {
     }
   }
 
+  const handleSelection = (event: any) => {
+    setSelection(event.target.value);
+  };
+
   return (
     <Flex
       align="center"
       justifyContent="center"
       height="100vh"
-      bg="white"
-      color="black"
       direction="column"
     >
-      <ArrowBackIcon
-        w={8}
-        h={8}
-        pos="absolute"
-        top="5"
-        left="5"
-        sx={{ cursor: 'pointer' }}
-        onClick={() => router.push('/dashboard')}
-      />
       <Heading as="h1" size="xl" pb="10vh">
         Add a new position to your portfolio
       </Heading>
@@ -95,8 +80,7 @@ const AddNewPosition = () => {
         align="center"
         justifyContent="space-evenly"
         width="30vw"
-        bg="white"
-        color="black"
+        color="red.500"
         direction="column"
       >
         <Select
@@ -182,19 +166,28 @@ const AddNewPosition = () => {
                 <Text mb="2vh">{errors.apy && touched.apy && errors.apy}</Text>
                 <Button
                   alignSelf="center"
-                  color="white"
-                  backgroundColor="blue.300"
+                  colorScheme="linkedin"
                   boxShadow="lg"
                   type="submit"
                   disabled={isSubmitting}
                 >
-                  ADD
+                  ADD POSITION
                 </Button>
               </Flex>
             </form>
           )}
         </Formik>
+        <Text mt="2vh">{mutationError}</Text>
       </Flex>
+      <ArrowBackIcon
+        w={8}
+        h={8}
+        pos="absolute"
+        top="5"
+        left="5"
+        sx={{ cursor: 'pointer' }}
+        onClick={() => router.push('/dashboard')}
+      />
     </Flex>
   );
 };

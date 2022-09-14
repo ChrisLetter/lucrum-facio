@@ -1,5 +1,4 @@
-import Head from 'next/head';
-import { Flex, Input, Button, Text, Heading } from '@chakra-ui/react';
+import { Flex, Heading } from '@chakra-ui/react';
 import Login from './../components/authentication/Login';
 import RegisterOption from '../components/authentication/RegisterOption';
 
@@ -10,10 +9,9 @@ const Home = () => {
       justifyContent="space-evenly"
       height="100vh"
       bg="white"
-      color="blue.500"
       direction="column"
     >
-      <Heading as="h1" size="4xl">
+      <Heading color="blue.500" as="h1" size="4xl">
         Lucrum Facio
       </Heading>
       <Login />

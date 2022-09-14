@@ -51,17 +51,6 @@ export const GET_COINS = gql`
   }
 `;
 
-export const GET_USER_HOLDINGS = gql`
-  query ($userId: Int) {
-    getUserHoldings(userId: $userId) {
-      location
-      quantity
-      apy
-      cryptoId
-    }
-  }
-`;
-
 export const DELETE_POSITION = gql`
   mutation ($positionId: Int) {
     deletePosition(positionId: $positionId) {

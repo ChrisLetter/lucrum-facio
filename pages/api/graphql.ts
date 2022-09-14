@@ -3,8 +3,8 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 import Cors from 'micro-cors';
 import { typeDefs } from '../../graphql/type-defs/type-defs';
-import { resolvers } from './../../graphql/resolvers/resolvers';
-import { createToken, getUserFromToken } from './../../graphql/resolvers/auth';
+import { resolvers } from '../../graphql/resolvers/resolvers';
+import { createToken, getUserFromToken } from '../../graphql/resolvers/auth';
 
 export const config = {
   api: {

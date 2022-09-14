@@ -1,4 +1,4 @@
-import { IUserInfo, IHolding } from './../interfaces/interfaces';
+import { IUserInfo, IHolding } from '../interfaces/interfaces';
 
 export type createNewUserAction = {
   type: 'AUTHENTICATE_USER';
@@ -8,4 +8,9 @@ export type createNewUserAction = {
 export type updateHoldings = {
   type: 'UPDATE_HOLDINGS';
   payload: { holdings: IHolding[] };
+};
+
+export type logout = {
+  type: 'LOGOUT_USER';
+  payload: {};
 };

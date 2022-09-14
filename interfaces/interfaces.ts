@@ -44,10 +44,6 @@ export interface IHoldingsProp {
   holdings: IHolding[];
 }
 
-export interface IHoldingProp {
-  holding: IHolding;
-}
-
 export interface IHolding {
   name: string;
   location: string;
@@ -111,7 +107,7 @@ export interface IPieChartDataProps {
   data: IPieChartData[];
 }
 
-export interface IAggregateHoldingsResult {
+export interface aggregatedHoldings {
   usdNetWorth: string;
   usdApyEstimate: string;
   totalApy: string;

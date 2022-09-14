@@ -1,17 +1,14 @@
 import { Flex, Box, Button, Text, Heading, Icon } from '@chakra-ui/react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { helperFunctions } from '../util/helper-function';
-import {
-  IHoldingsProp,
-  IUserInfo,
-  IAggregateHoldingsResult,
-} from '../interfaces/interfaces';
+import { IUserInfo, aggregatedHoldings } from '../interfaces/interfaces';
 import PieChart from '../components/PieChart';
 import { FiLogOut } from 'react-icons/fi';
 
-const DashBoard = ({ holdings }: IHoldingsProp) => {
+const DashBoard = ({ holdings, username }: IUserInfo) => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [netWorth, setNetWorth] = useState('');
   const [usdApyEstimate, setUsdApyEstimate] = useState('');
@@ -30,6 +27,11 @@ const DashBoard = ({ holdings }: IHoldingsProp) => {
   }
 
   function logout() {
+    localStorage.removeItem('accessToken');
+    dispatch({
+      type: 'LOGOUT_USER',
+      payload: {},
+    });
     router.push('/');
   }
 
@@ -37,7 +39,7 @@ const DashBoard = ({ holdings }: IHoldingsProp) => {
     if (holdings?.length) {
       helperFunctions
         .aggregate(holdings)
-        .then((results: IAggregateHoldingsResult) => {
+        .then((results: aggregatedHoldings) => {
           const { usdNetWorth, usdApyEstimate, totalApy, dataPieChart } =
             results;
           setNetWorth(usdNetWorth);
@@ -45,8 +47,10 @@ const DashBoard = ({ holdings }: IHoldingsProp) => {
           setTotalApy(totalApy);
           setPieChartStats(dataPieChart);
         });
-    } else {
+    } else if (username) {
       openNoRecords();
+    } else {
+      logout();
     }
   }, [holdings]);
 
@@ -92,8 +96,7 @@ const DashBoard = ({ holdings }: IHoldingsProp) => {
           </Flex>
           <Flex>
             <Button
-              color="white"
-              backgroundColor="blue.300"
+              colorScheme="linkedin"
               boxShadow="md"
               onClick={openAddPositionPage}
               mr="1vw"
@@ -101,8 +104,7 @@ const DashBoard = ({ holdings }: IHoldingsProp) => {
               Add Position
             </Button>
             <Button
-              color="white"
-              backgroundColor="blue.300"
+              colorScheme="linkedin"
               boxShadow="md"
               onClick={openPortfolio}
             >
