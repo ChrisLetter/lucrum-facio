@@ -3,9 +3,13 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { FiLogOut } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
+import { isAuthenticated } from '../util/authentication-hook';
 
 function NoRecords() {
   const router = useRouter();
+  if (!isAuthenticated()) {
+    router.push('/');
+  }
   const dispatch = useDispatch();
 
   function openAddPositionPage() {

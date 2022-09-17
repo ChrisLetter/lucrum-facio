@@ -6,10 +6,14 @@ import { helperFunctions } from '../util/helper-function';
 import { IUserInfo, aggregatedHoldings } from '../interfaces/interfaces';
 import PieChart from '../components/PieChart';
 import { FiLogOut } from 'react-icons/fi';
+import { isAuthenticated } from '../util/authentication-hook';
 
 const DashBoard = ({ holdings, username }: IUserInfo) => {
-  const dispatch = useDispatch();
   const router = useRouter();
+  if (!isAuthenticated()) {
+    router.push('/');
+  }
+  const dispatch = useDispatch();
   const [netWorth, setNetWorth] = useState('');
   const [usdApyEstimate, setUsdApyEstimate] = useState('');
   const [totalApy, setTotalApy] = useState('');

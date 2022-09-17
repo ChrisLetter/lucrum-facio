@@ -11,9 +11,13 @@ import {
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
+import { isAuthenticated } from '../util/authentication-hook';
 
 const AddNewPosition = () => {
   const router = useRouter();
+  if (!isAuthenticated()) {
+    router.push('/');
+  }
   const dispatch = useDispatch();
   const [selection, setSelection] = useState();
   const [mutationError, setMutationError] = useState('');

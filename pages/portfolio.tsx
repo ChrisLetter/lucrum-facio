@@ -11,9 +11,13 @@ import {
 import HoldingsGroupedByCrypto from '../components/HoldingsGroupedByCrypto';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
+import { isAuthenticated } from '../util/authentication-hook';
 
 function Portfolio({ holdings }: IHoldingsProp) {
   const router = useRouter();
+  if (!isAuthenticated()) {
+    router.push('/');
+  }
   const holdingsGroupedByCrypto: IHoldingsGroupedByCrypto = {};
 
   holdings &&

@@ -19,7 +19,7 @@ model User {
 model Holding {
   id  Int  @default(autoincrement())  @id
   location  String
-  quantity  Int
+  quantity  Float
   apy  Float
   userId  Int
   cryptoId  String
