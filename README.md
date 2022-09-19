@@ -11,7 +11,7 @@
 - Back end - GraphQL, Prisma, PostgreSQL, TypeScript
 - Others - JWT, CoinGecko API
 
-### Screenshots
+## Screenshots
 
 <img src="screenshots/login.png?raw=true" width="400"> <img src="screenshots/holdings.png?raw=true" width="400"> <img src="screenshots/add-position.png?raw=true" width="400"> <img src="screenshots/portfolio-list.png?raw=true" width="400"> <img src="screenshots/edit-position.png?raw=true" width="400">
 
